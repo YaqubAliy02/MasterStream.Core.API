@@ -1,0 +1,6 @@
+@MasterStream.Core.API_HostAddress = http://localhost:5028
+
+GET {{MasterStream.Core.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
