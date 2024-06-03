@@ -5,7 +5,7 @@
 
 namespace MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages
 {
-    internal interface IStorageBroker
+    public interface IStorageBroker
     {
         ValueTask<VideoMetadata> InsertVideoMetadataAsync(VideoMetadata videoMetadata);
     }

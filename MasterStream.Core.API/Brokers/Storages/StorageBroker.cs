@@ -8,7 +8,7 @@ using STX.EFxceptions.SqlServer;
 
 namespace MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages
 {
-    internal partial class StorageBroker : EFxceptionsContext, IStorageBroker
+    public partial class StorageBroker : EFxceptionsContext, IStorageBroker
     {
         private readonly IConfiguration configuration;
 

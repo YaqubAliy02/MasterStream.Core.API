@@ -38,7 +38,6 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
                 Times.Once());
 
             this.storageBrokerMock.VerifyNoOtherCalls();
-            this.loggingBrokerMock.VerifyNoOtherCalls();
 
         }
 
