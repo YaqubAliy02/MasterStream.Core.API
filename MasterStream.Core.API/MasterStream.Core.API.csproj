@@ -19,10 +19,11 @@
     </PackageReference>
     <PackageReference Include="STX.EFxceptions.SqlServer" Version="0.1.6" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+    <PackageReference Include="Xeption" Version="2.6.0" />
   </ItemGroup>
 
 	<ItemGroup>
-		<InternalsVisibleTo Include="MasterStream.Core.API.Tests.Unit"/>
+		<InternalsVisibleTo Include="MasterStream.Core.API.Tests.Unit" />
 	</ItemGroup>
 
 </Project>

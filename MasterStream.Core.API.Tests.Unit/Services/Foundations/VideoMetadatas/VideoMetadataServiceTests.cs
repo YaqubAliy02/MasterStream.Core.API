@@ -3,12 +3,14 @@
 // ALL RIGHTS RESERVED      
 //--------------------------
 
+using System.Linq.Expressions;
 using MasterStream.Core.API.Brokers.Loggings;
 using MasterStream.Core.API.Models.VideoMetadatas;
 using MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages;
 using MasterStream.Core.API.Services.VideoMetadatas;
 using Moq;
 using Tynamix.ObjectFiller;
+using Xeptions;
 
 namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 {
@@ -43,6 +45,9 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
             return filler;
         }
+
+        private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
+            actualException => actualException.SameExceptionAs(expectedException); 
 
     }
 }

@@ -9,7 +9,7 @@ using MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages;
 
 namespace MasterStream.Core.API.Services.VideoMetadatas
 {
-    internal class VideoMetadataService : IVideoMetadataService
+    public partial class VideoMetadataService : IVideoMetadataService
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
@@ -22,8 +22,11 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             this.loggingBroker = loggingBroker;
         }
 
-        public async ValueTask<VideoMetadata> AddVideoMetadataAsync(VideoMetadata videoMetadata) =>
-           await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);
-        
+        public async ValueTask<VideoMetadata> AddVideoMetadataAsync(VideoMetadata videoMetadata)
+        {
+           ValidateVideoMetadata(videoMetadata);
+            
+           return await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);
+        }
     }
 }
