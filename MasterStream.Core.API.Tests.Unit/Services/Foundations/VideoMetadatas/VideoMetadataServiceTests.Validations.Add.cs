@@ -20,7 +20,9 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
             var nullVideoMetadataException = new NullVideoMetadataException();
 
             var expectedVideoMetadataValidationException = 
-                new VideoMetadataValidationException(nullVideoMetadataException);
+                new VideoMetadataValidationException(
+                    message: "VideoMetadata validation error occured, fix errors and try again",
+                    innerException:nullVideoMetadataException);
 
             //when
             ValueTask<VideoMetadata> addVideoMetadataTask = 
@@ -42,6 +44,72 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
             this.storageBrokerMock.Verify(broker => 
                 broker.InsertVideoMetadataAsync(It.IsAny<VideoMetadata>()),
                 Times.Never);
+
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+        }
+
+        [Theory]
+        [InlineData(null)]
+        [InlineData("")]
+        [InlineData("  ")]
+        public async Task ShouldThrowValidationExceptionOnAddIfInputIsInvalidAndLogItAsync(
+            string invalidText)
+        {
+            //given
+            var invalidVideoMetadata = new VideoMetadata
+            {
+                Title = invalidText,
+            };
+
+            var invalidVideoMetadataException =
+                new InvalidVideoMetadataException(
+                    message: "Video metadata is invalid");
+
+            invalidVideoMetadataException.AddData(
+                key: nameof(VideoMetadata.Id),
+                values: "Id is required");
+
+            invalidVideoMetadataException.AddData(
+                key: nameof(VideoMetadata.Title),
+                values: "Text is required");
+
+            invalidVideoMetadataException.AddData(
+                key: nameof(VideoMetadata.BlobPath),
+                values: "Text is requred");
+
+            invalidVideoMetadataException.AddData(
+                key: nameof(VideoMetadata.CreatedAt),
+                values: "Date is reqired");
+
+            invalidVideoMetadataException.AddData(
+                key: nameof(VideoMetadata.UpdatedDate),
+                values: "Date is reqired");
+
+            var expectedVideoMetadataValidationException =
+                new VideoMetadataValidationException(
+                    message: "Video metadata validation error occured, fix errors and try again",
+                    innerException: invalidVideoMetadataException);
+
+            //when
+            ValueTask<VideoMetadata> addVideoMetadata =
+                this.videoMetadataService.AddVideoMetadataAsync(invalidVideoMetadata);
+
+            VideoMetadataValidationException actualVideoMetadataValidationException =
+                await Assert.ThrowsAsync<VideoMetadataValidationException>(addVideoMetadata.AsTask);
+
+            //then
+             actualVideoMetadataValidationException.Should().BeEquivalentTo(
+                 expectedVideoMetadataValidationException);
+
+            this.loggingBrokerMock.Verify(broker => 
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedVideoMetadataValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.InsertVideoMetadataAsync(It.IsAny<VideoMetadata>()), 
+                    Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();

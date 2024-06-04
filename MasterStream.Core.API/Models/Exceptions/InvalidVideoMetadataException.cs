@@ -7,10 +7,10 @@ using Xeptions;
 
 namespace MasterStream.Core.API.Models.Exceptions
 {
-    public class VideoMetadataValidationException : Xeption
+    public class InvalidVideoMetadataException : Xeption
     {
-        public VideoMetadataValidationException(Xeption innerException, string message)
-            : base(message, innerException)
+        public InvalidVideoMetadataException(string message)
+            :base(message)
         { }
     }
 }

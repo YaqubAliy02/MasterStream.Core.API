@@ -29,7 +29,9 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             NullVideoMetadataException nullVideoMetadataException)
         {
             var videoMetaDataValidationException =
-                new VideoMetadataValidationException(nullVideoMetadataException);
+                new VideoMetadataValidationException(
+                message: "Video metadata validation error occured, fix errors and try again",
+                innerException: nullVideoMetadataException);
 
             this.loggingBroker.LogError(videoMetaDataValidationException);
 
