@@ -49,7 +49,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
         }
 
         private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
-            actualException => actualException.SameExceptionAs(expectedException); 
+            actualException => actualException.SameExceptionAs(expectedException);
 
         private static SqlException GetSqlException() =>
             (SqlException)FormatterServices.GetSafeUninitializedObject(typeof(SqlException));

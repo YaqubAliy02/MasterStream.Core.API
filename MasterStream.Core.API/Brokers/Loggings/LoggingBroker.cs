@@ -19,6 +19,6 @@ namespace MasterStream.Core.API.Brokers.Loggings
 
         public void LogError(Exception exception) =>
             this.logger.LogError(exception.Message);
-       
+
     }
 }

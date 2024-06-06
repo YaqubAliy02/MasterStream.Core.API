@@ -15,7 +15,7 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
         private readonly ILoggingBroker loggingBroker;
 
         public VideoMetadataService(
-            IStorageBroker storageBroker, 
+            IStorageBroker storageBroker,
             ILoggingBroker loggingBroker)
         {
             this.storageBroker = storageBroker;
@@ -29,6 +29,6 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
 
                 return await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);
             });
-       
+
     }
 }

@@ -21,14 +21,14 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
             VideoMetadata someVideoMetadata = CreateRandomVideoMetadata();
             SqlException sqlException = GetSqlException();
 
-            FailedVideoMetadataStorageException failedVideoMetadataStorageException = 
+            FailedVideoMetadataStorageException failedVideoMetadataStorageException =
                 new FailedVideoMetadataStorageException(
-                    message:"Failed video metadata error occured, contact to support",
+                    message: "Failed video metadata error occured, contact to support",
                     innerException: sqlException);
 
             var expectedVideoMetadataDependencyException =
                 new VideoMetadataDependencyException(
-                    message:"Video metadata dependency error occured, fix the errors and try again",
+                    message: "Video metadata dependency error occured, fix the errors and try again",
                     innerException: failedVideoMetadataStorageException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -36,7 +36,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
                     .ThrowsAsync(sqlException);
 
             //when
-            ValueTask<VideoMetadata> addVideoMetadata = 
+            ValueTask<VideoMetadata> addVideoMetadata =
                 this.videoMetadataService.AddVideoMetadataAsync(someVideoMetadata);
 
             var actualVideoMetadataValidationException =

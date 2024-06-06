@@ -30,12 +30,12 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
                 await this.videoMetadataService.AddVideoMetadataAsync(inputVideoMetadata);
 
             //then
-            actualVideoMetadata.Should().BeEquivalentTo(expectedVideoMetadata);   
+            actualVideoMetadata.Should().BeEquivalentTo(expectedVideoMetadata);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertVideoMetadataAsync(inputVideoMetadata),
                 Times.Once());
-           
+
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }

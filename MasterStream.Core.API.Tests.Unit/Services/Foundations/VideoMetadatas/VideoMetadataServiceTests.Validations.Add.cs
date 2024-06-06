@@ -13,20 +13,20 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
     public partial class VideoMetadataServiceTests
     {
         [Fact]
-        public async  Task ShouldThrowValidationExceptionOnAddIfIsNullAndLogError()
-        {   
+        public async Task ShouldThrowValidationExceptionOnAddIfIsNullAndLogError()
+        {
             //given
             VideoMetadata nullVideoMetadata = null;
             var nullVideoMetadataException = new NullVideoMetadataException(
                 message: "Video metadata is null");
 
-            var expectedVideoMetadataValidationException = 
+            var expectedVideoMetadataValidationException =
                 new VideoMetadataValidationException(
                     message: "Video metadata validation error occured, fix errors and try again",
-                    innerException:nullVideoMetadataException);
+                    innerException: nullVideoMetadataException);
 
             //when
-            ValueTask<VideoMetadata> addVideoMetadataTask = 
+            ValueTask<VideoMetadata> addVideoMetadataTask =
                 this.videoMetadataService.AddVideoMetadataAsync(nullVideoMetadata);
 
             var actualVideoMetadataValidationException =
@@ -42,7 +42,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
                 expectedVideoMetadataValidationException))),
                 Times.Once);
 
-            this.storageBrokerMock.Verify(broker => 
+            this.storageBrokerMock.Verify(broker =>
                 broker.InsertVideoMetadataAsync(It.IsAny<VideoMetadata>()),
                 Times.Never);
 
@@ -100,20 +100,20 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
                 await Assert.ThrowsAsync<VideoMetadataValidationException>(addVideoMetadataTask.AsTask);
 
             //then
-             actualVideoMetadataValidationException.Should().BeEquivalentTo(
-                 expectedVideoMetadataValidationException);
+            actualVideoMetadataValidationException.Should().BeEquivalentTo(
+                expectedVideoMetadataValidationException);
 
-            this.loggingBrokerMock.Verify(broker => 
+            this.loggingBrokerMock.Verify(broker =>
                 broker.LogError(It.Is(SameExceptionAs(
                     expectedVideoMetadataValidationException))),
                         Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.InsertVideoMetadataAsync(It.IsAny<VideoMetadata>()), 
+                broker.InsertVideoMetadataAsync(It.IsAny<VideoMetadata>()),
                     Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock. VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

@@ -29,7 +29,7 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             {
                 throw CreateAndLogValidationExceptionAndIt(invalidVideoMetadataException);
             }
-            catch(SqlException sqlException)
+            catch (SqlException sqlException)
             {
                 var failedVideoMetadataStorageException =
                     new FailedVideoMetadataStorageException(

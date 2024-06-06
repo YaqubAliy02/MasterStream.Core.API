@@ -14,4 +14,3 @@ namespace MasterStream.Core.API.Models.Exceptions
         { }
     }
 }
-    
