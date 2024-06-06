@@ -5,6 +5,7 @@
 
 using MasterStream.Core.API.Models.Exceptions;
 using MasterStream.Core.API.Models.VideoMetadatas;
+using Microsoft.Data.SqlClient;
 using Xeptions;
 
 namespace MasterStream.Core.API.Services.VideoMetadatas
@@ -28,6 +29,15 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             {
                 throw CreateAndLogValidationExceptionAndIt(invalidVideoMetadataException);
             }
+            catch(SqlException sqlException)
+            {
+                var failedVideoMetadataStorageException =
+                    new FailedVideoMetadataStorageException(
+                        message: "Failed video metadata error occured, contact to support",
+                        innerException: sqlException);
+
+                throw CreateAndLogCriticalDependencyException(failedVideoMetadataStorageException);
+            }
         }
 
         private VideoMetadataValidationException CreateAndLogValidationExceptionAndIt(
@@ -41,6 +51,18 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             this.loggingBroker.LogError(videoMetadataValidationException);
 
             return videoMetadataValidationException;
+        }
+
+        private VideoMetadataDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
+        {
+            VideoMetadataDependencyException videoMetadataDependencyException =
+                new VideoMetadataDependencyException(
+                    message: "Video metadata dependency error occured, fix the errors and try again",
+                    innerException: exception);
+
+            this.loggingBroker.LogCriticalError(videoMetadataDependencyException);
+
+            return videoMetadataDependencyException;
         }
     }
 }
