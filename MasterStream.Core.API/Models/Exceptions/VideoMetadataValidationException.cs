@@ -9,7 +9,7 @@ namespace MasterStream.Core.API.Models.Exceptions
 {
     public class VideoMetadataValidationException : Xeption
     {
-        public VideoMetadataValidationException(Xeption innerException, string message)
+        public VideoMetadataValidationException(string message, Xeption innerException)
             : base(message, innerException)
         { }
     }

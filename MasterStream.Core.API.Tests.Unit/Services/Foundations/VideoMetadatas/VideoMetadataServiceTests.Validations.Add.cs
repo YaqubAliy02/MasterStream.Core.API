@@ -17,11 +17,12 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
         {   
             //given
             VideoMetadata nullVideoMetadata = null;
-            var nullVideoMetadataException = new NullVideoMetadataException();
+            var nullVideoMetadataException = new NullVideoMetadataException(
+                message: "Video metadata is null");
 
             var expectedVideoMetadataValidationException = 
                 new VideoMetadataValidationException(
-                    message: "VideoMetadata validation error occured, fix errors and try again",
+                    message: "Video metadata validation error occured, fix errors and try again",
                     innerException:nullVideoMetadataException);
 
             //when
@@ -52,7 +53,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
         [Theory]
         [InlineData(null)]
         [InlineData("")]
-        [InlineData("  ")]
+        [InlineData(" ")]
         public async Task ShouldThrowValidationExceptionOnAddIfInputIsInvalidAndLogItAsync(
             string invalidText)
         {
@@ -76,15 +77,15 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
             invalidVideoMetadataException.AddData(
                 key: nameof(VideoMetadata.BlobPath),
-                values: "Text is requred");
+                values: "Text is required");
 
             invalidVideoMetadataException.AddData(
                 key: nameof(VideoMetadata.CreatedAt),
-                values: "Date is reqired");
+                values: "Date is required");
 
             invalidVideoMetadataException.AddData(
                 key: nameof(VideoMetadata.UpdatedDate),
-                values: "Date is reqired");
+                values: "Date is required");
 
             var expectedVideoMetadataValidationException =
                 new VideoMetadataValidationException(
@@ -92,11 +93,11 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
                     innerException: invalidVideoMetadataException);
 
             //when
-            ValueTask<VideoMetadata> addVideoMetadata =
+            ValueTask<VideoMetadata> addVideoMetadataTask =
                 this.videoMetadataService.AddVideoMetadataAsync(invalidVideoMetadata);
 
-            VideoMetadataValidationException actualVideoMetadataValidationException =
-                await Assert.ThrowsAsync<VideoMetadataValidationException>(addVideoMetadata.AsTask);
+            var actualVideoMetadataValidationException =
+                await Assert.ThrowsAsync<VideoMetadataValidationException>(addVideoMetadataTask.AsTask);
 
             //then
              actualVideoMetadataValidationException.Should().BeEquivalentTo(
@@ -112,7 +113,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
                     Times.Never);
 
             this.loggingBrokerMock.VerifyNoOtherCalls();
-            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock. VerifyNoOtherCalls();
         }
     }
 }

@@ -9,8 +9,8 @@ namespace MasterStream.Core.API.Models.Exceptions
 {
     public class NullVideoMetadataException : Xeption
     {
-        public NullVideoMetadataException()
-            :base(message: "VideoMetadata is null")
-        {}
+        public NullVideoMetadataException(string message)
+            : base(message)
+        { }
     }
 }

@@ -5,6 +5,7 @@
 
 using MasterStream.Core.API.Models.Exceptions;
 using MasterStream.Core.API.Models.VideoMetadatas;
+using Xeptions;
 
 namespace MasterStream.Core.API.Services.VideoMetadatas
 {
@@ -19,23 +20,27 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             {
                 return await returningVideoMetadataFunction();
             }
-            catch(NullVideoMetadataException nullVideoMetadataException)
+            catch (NullVideoMetadataException nullVideoMetadataException)
             {
-                throw CreateAndLogValidationExceptionIt(nullVideoMetadataException);
+                throw CreateAndLogValidationExceptionAndIt(nullVideoMetadataException);
+            }
+            catch (InvalidVideoMetadataException invalidVideoMetadataException)
+            {
+                throw CreateAndLogValidationExceptionAndIt(invalidVideoMetadataException);
             }
         }
 
-        private VideoMetadataValidationException CreateAndLogValidationExceptionIt(
-            NullVideoMetadataException nullVideoMetadataException)
+        private VideoMetadataValidationException CreateAndLogValidationExceptionAndIt(
+            Xeption exception)
         {
-            var videoMetaDataValidationException =
+            var videoMetadataValidationException =
                 new VideoMetadataValidationException(
                 message: "Video metadata validation error occured, fix errors and try again",
-                innerException: nullVideoMetadataException);
+                innerException: exception);
 
-            this.loggingBroker.LogError(videoMetaDataValidationException);
+            this.loggingBroker.LogError(videoMetadataValidationException);
 
-            return videoMetaDataValidationException;
+            return videoMetadataValidationException;
         }
     }
 }

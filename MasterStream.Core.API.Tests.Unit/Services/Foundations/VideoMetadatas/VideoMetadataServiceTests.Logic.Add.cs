@@ -13,7 +13,6 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
     public partial class VideoMetadataServiceTests
     {
         [Fact]
-
         public async Task ShouldAddVideoMetadataAsync()
         {
             //given
@@ -36,11 +35,9 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertVideoMetadataAsync(inputVideoMetadata),
                 Times.Once());
-
+           
             this.storageBrokerMock.VerifyNoOtherCalls();
-
+            this.loggingBrokerMock.VerifyNoOtherCalls();
         }
-
-
     }
 }
