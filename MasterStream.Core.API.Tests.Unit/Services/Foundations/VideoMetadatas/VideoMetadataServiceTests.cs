@@ -4,10 +4,12 @@
 //--------------------------
 
 using System.Linq.Expressions;
+using System.Runtime.Serialization;
 using MasterStream.Core.API.Brokers.Loggings;
 using MasterStream.Core.API.Models.VideoMetadatas;
 using MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages;
 using MasterStream.Core.API.Services.VideoMetadatas;
+using Microsoft.Data.SqlClient;
 using Moq;
 using Tynamix.ObjectFiller;
 using Xeptions;
@@ -48,5 +50,8 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
         private static Expression<Func<Xeption, bool>> SameExceptionAs(Xeption expectedException) =>
             actualException => actualException.SameExceptionAs(expectedException); 
+
+        private static SqlException GetSqlException() =>
+            (SqlException)FormatterServices.GetSafeUninitializedObject(typeof(SqlException));
     }
 }
