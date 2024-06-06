@@ -8,7 +8,7 @@ using STX.EFxceptions.SqlServer;
 
 namespace MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages
 {
-    internal partial class StorageBroker : EFxceptionsContext
+    public partial class StorageBroker : EFxceptionsContext, IStorageBroker
     {
         private readonly IConfiguration configuration;
 
@@ -26,7 +26,7 @@ namespace MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages
             return @object;
         }
 
-        private  IQueryable<T> SelectAll<T>() where T : class => this.Set<T>();
+        private IQueryable<T> SelectAll<T>() where T : class => this.Set<T>();
 
         private async ValueTask<T> SelectAsync<T>(params object[] objectIds) where T : class =>
             await this.FindAsync<T>(objectIds);
@@ -38,7 +38,7 @@ namespace MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages
 
             return @object;
         }
-        
+
         private async ValueTask<T> DeleteAsync<T>(T @object)
         {
             this.Entry(@object).State = EntityState.Deleted;

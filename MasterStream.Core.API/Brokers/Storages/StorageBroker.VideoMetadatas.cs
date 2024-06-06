@@ -7,9 +7,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages
 {
-    internal partial class StorageBroker
+    public partial class StorageBroker
     {
-        private DbSet<VideoMetadata> VideoMetadatas {  get; set; }
+        private DbSet<VideoMetadata> VideoMetadatas { get; set; }
 
         public async ValueTask<VideoMetadata> InsertVideoMetadataAsync(VideoMetadata videoMetadata) =>
             await InsertAsync(videoMetadata);
