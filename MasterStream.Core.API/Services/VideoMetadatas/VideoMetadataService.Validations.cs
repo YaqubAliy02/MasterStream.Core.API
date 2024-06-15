@@ -72,6 +72,9 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             }
         }
 
+        public void ValidateVideoMetadataId(Guid videoMetadataId) =>
+           Validate((Rule: IsInvalid(videoMetadataId), Parameter: nameof(VideoMetadata.Id)));
+
         private static dynamic IsNotSame(
             DateTimeOffset firstDate,
             DateTimeOffset secondDate,
