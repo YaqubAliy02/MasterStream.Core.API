@@ -10,5 +10,6 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
     internal interface IVideoMetadataService
     {
         ValueTask<VideoMetadata> AddVideoMetadataAsync(VideoMetadata videoMetadata);
+        IQueryable<VideoMetadata> RetrieveAllVideoMetadatas();
     }
 }
