@@ -19,15 +19,15 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
             Guid videoMetadataId = Guid.Empty;
 
             var invalidVideoMetadataException =
-                new InvalidVideoMetadataException("Video Metadata is invalid.");
+                new InvalidVideoMetadataException("Video metadata is invalid");
 
             invalidVideoMetadataException.AddData(
                 key: nameof(VideoMetadata.Id),
-                values: "Id is required.");
+                values: "Id is required");
 
             var expectedVideoMetadataValidationException =
                 new VideoMetadataValidationException(
-                    message: "Video Metadata Validation Exception occured, fix the errors and try again.",
+                    message: "Video metadata validation error occured, fix errors and try again",
                     innerException: invalidVideoMetadataException);
 
             // when
