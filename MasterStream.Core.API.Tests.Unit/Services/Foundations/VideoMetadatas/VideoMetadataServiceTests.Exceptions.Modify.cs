@@ -23,12 +23,12 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
             var failedVideoMetadataStorageException =
                 new FailedVideoMetadataStorageException(
-                    message: "Failed Video Metadata storage error occured, please contact support.",
+                    message: "Failed video metadata storage error occured, please contact support.",
                     innerException: sqlException);
 
             var expectedVideoMetadataDependencyException =
                 new VideoMetadataDependencyException(
-                    message: "Video Metadata dependency exception error occured, please contact support.",
+                    message: "Video metadata dependency error occured, fix the errors and try again.",
                     innerException: failedVideoMetadataStorageException);
 
             this.storageBrokerMock.Setup(broker =>

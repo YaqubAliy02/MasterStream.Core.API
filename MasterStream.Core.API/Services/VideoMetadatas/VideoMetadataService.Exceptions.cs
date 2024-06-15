@@ -34,7 +34,7 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             {
                 var failedVideoMetadataStorageException =
                     new FailedVideoMetadataStorageException(
-                        message: "Failed video metadata error occured, contact to support",
+                        message: "Failed video metadata storage error occured, please contact support.",
                         innerException: sqlException);
 
                 throw CreateAndLogCriticalDependencyException(failedVideoMetadataStorageException);
@@ -96,7 +96,7 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
         {
             VideoMetadataDependencyException videoMetadataDependencyException =
                 new VideoMetadataDependencyException(
-                    message: "Video metadata dependency error occured, fix the errors and try again",
+                    message: "Video metadata dependency error occured, fix the errors and try again.",
                     innerException: exception);
 
             this.loggingBroker.LogCriticalError(videoMetadataDependencyException);
