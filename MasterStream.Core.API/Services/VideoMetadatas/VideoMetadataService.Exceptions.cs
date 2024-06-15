@@ -6,6 +6,7 @@
 using MasterStream.Core.API.Models.Exceptions;
 using MasterStream.Core.API.Models.VideoMetadatas;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Xeptions;
 
 namespace MasterStream.Core.API.Services.VideoMetadatas
@@ -34,10 +35,35 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             {
                 var failedVideoMetadataStorageException =
                     new FailedVideoMetadataStorageException(
-                        message: "Failed video metadata error occured, contact to support",
+                        message: "Failed video metadata storage error occured, please contact support.",
                         innerException: sqlException);
 
                 throw CreateAndLogCriticalDependencyException(failedVideoMetadataStorageException);
+            }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedVideoMetadataException = new LockedVideoMetadataException(
+                    "Video Metadata is locked, please try again.",
+                        dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyValidationException(lockedVideoMetadataException);
+            }
+            catch (DbUpdateException databaseUpdateException)
+            {
+                var failedVideoMetadataStorage = new FailedVideoMetadataStorageException(
+                    "Failed Video Metadata storage error occured, please contact support.",
+                        databaseUpdateException);
+
+                throw CreateAndLogDependencyException(failedVideoMetadataStorage);
+            }
+            catch (Exception exception)
+            {
+                var failedVideoMetadataServiceException =
+                    new FailedVideoMetadataServiceException(
+                        "Unexpected error of Video Metadata occured",
+                            exception);
+
+                throw CreateAndLogVideoMetadataDependencyServiceErrorOccurs(failedVideoMetadataServiceException);
             }
         }
 
@@ -65,6 +91,40 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
 
                 throw CreateAndLogVideoMetadataServiceErrorOccurs(failedVideoMetadataServiceException);
             }
+        }
+
+        private VideoMetadataDependencyException CreateAndLogDependencyException(Xeption exception)
+        {
+            var videoMetadataDependencyException = new VideoMetadataDependencyException(
+                "Video Metadata dependency exception error occured, please contact support.",
+                    exception);
+
+            this.loggingBroker.LogError(videoMetadataDependencyException);
+
+            return videoMetadataDependencyException;
+        }
+
+        private VideoMetadataDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var videoMetadataDependencyValidationException = new VideoMetadataDependencyValidationException(
+                "Video Metadata dependency error occured. Fix errors and try again.",
+                    exception);
+
+            this.loggingBroker.LogError(videoMetadataDependencyValidationException);
+
+            return videoMetadataDependencyValidationException;
+        }
+
+        private VideoMetadataServiceException CreateAndLogVideoMetadataDependencyServiceErrorOccurs(Xeption exception)
+        {
+            var videoMetadataDependencyServiceException =
+                new VideoMetadataServiceException(
+                    "Unexpected service error occured. Contact support.",
+                        exception);
+
+            this.loggingBroker.LogError(videoMetadataDependencyServiceException);
+
+            return videoMetadataDependencyServiceException;
         }
 
         private VideoMetadataServiceException CreateAndLogVideoMetadataServiceErrorOccurs(Xeption exception)
@@ -96,7 +156,7 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
         {
             VideoMetadataDependencyException videoMetadataDependencyException =
                 new VideoMetadataDependencyException(
-                    message: "Video metadata dependency error occured, fix the errors and try again",
+                    message: "Video metadata dependency error occured, fix the errors and try again.",
                     innerException: exception);
 
             this.loggingBroker.LogCriticalError(videoMetadataDependencyException);

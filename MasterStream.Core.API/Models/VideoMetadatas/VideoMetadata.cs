@@ -12,7 +12,7 @@ namespace MasterStream.Core.API.Models.VideoMetadatas
         public string Description { get; set; }
         public string BlobPath { get; set; }
         public string Thubnail { get; set; }
-        public DateTimeOffset CreatedAt { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }
 
     }
