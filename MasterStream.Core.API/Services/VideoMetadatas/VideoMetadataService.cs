@@ -30,5 +30,9 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
                 return await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);
             });
 
+        public IQueryable<VideoMetadata> RetrieveAllVideoMetadatas()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

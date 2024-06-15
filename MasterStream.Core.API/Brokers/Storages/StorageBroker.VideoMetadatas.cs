@@ -20,6 +20,9 @@ namespace MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages
         public async ValueTask<VideoMetadata> SelectVideoMetadataByIdAsync(Guid videometadataId) =>
             await SelectAsync<VideoMetadata>(videometadataId);
 
+        public async ValueTask<VideoMetadata> UpdateVideoMetadataAsync(VideoMetadata videoMetadata) =>
+            await UpdateAsync(videoMetadata);
+
         public async ValueTask<VideoMetadata> DeleteVideoMetadataAsync(VideoMetadata videoMetadata) =>
             await DeleteAsync(videoMetadata);
     }
