@@ -5,7 +5,9 @@ VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterStream.Core.API", "MasterStream.Core.API\MasterStream.Core.API.csproj", "{B43705CB-1883-49CC-B558-3C238B993AE8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterStream.Core.API.Tests.Unit", "MasterStream.Core.API.Tests.Unit\MasterStream.Core.API.Tests.Unit.csproj", "{3689A0AA-FA02-4E70-B406-1E5C48E96D55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterStream.Core.API.Tests.Unit", "MasterStream.Core.API.Tests.Unit\MasterStream.Core.API.Tests.Unit.csproj", "{3689A0AA-FA02-4E70-B406-1E5C48E96D55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterStream.API.Infrastructure.Build", "MasterStream.API.Infrastructure.Build\MasterStream.API.Infrastructure.Build.csproj", "{63CAA6BF-9BDD-4D63-8CCB-52C38BEAEFB9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{3689A0AA-FA02-4E70-B406-1E5C48E96D55}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3689A0AA-FA02-4E70-B406-1E5C48E96D55}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3689A0AA-FA02-4E70-B406-1E5C48E96D55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63CAA6BF-9BDD-4D63-8CCB-52C38BEAEFB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63CAA6BF-9BDD-4D63-8CCB-52C38BEAEFB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63CAA6BF-9BDD-4D63-8CCB-52C38BEAEFB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63CAA6BF-9BDD-4D63-8CCB-52C38BEAEFB9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

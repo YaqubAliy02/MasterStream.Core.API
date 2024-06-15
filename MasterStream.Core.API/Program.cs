@@ -1,5 +1,4 @@
 using MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
