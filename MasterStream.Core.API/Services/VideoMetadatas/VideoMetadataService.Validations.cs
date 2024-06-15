@@ -3,6 +3,8 @@
 // ALL RIGHTS RESERVED      
 //--------------------------
 
+using System.Data;
+using System.Reflection.Metadata;
 using MasterStream.Core.API.Models.Exceptions;
 using MasterStream.Core.API.Models.VideoMetadatas;
 
@@ -19,7 +21,14 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
                 (Rule: IsInvalid(videoMetadata.Title), Parameter: nameof(VideoMetadata.Title)),
                 (Rule: IsInvalid(videoMetadata.BlobPath), Parameter: nameof(VideoMetadata.BlobPath)),
                 (Rule: IsInvalid(videoMetadata.CreatedAt), Parameter: nameof(VideoMetadata.CreatedAt)),
-                (Rule: IsInvalid(videoMetadata.UpdatedDate), Parameter: nameof(VideoMetadata.UpdatedDate))
+                (Rule: IsInvalid(videoMetadata.UpdatedDate), Parameter: nameof(VideoMetadata.UpdatedDate)),
+                (Rule: IsNotRecent(videoMetadata.CreatedAt), Parameter: nameof(VideoMetadata.CreatedAt)),
+
+                (Rule: IsNotSame(
+                    firstDate: videoMetadata.CreatedAt,
+                    secondDate: videoMetadata.UpdatedDate,
+                    secondDateName: nameof(VideoMetadata.UpdatedDate)),
+                    Parameter: nameof(VideoMetadata.CreatedAt))
                 );
         }
         private void ValidateVideoMetadata(VideoMetadata videoMetadata)
@@ -29,6 +38,29 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
                 throw new NullVideoMetadataException(
                     message: "Video metadata is null");
             }
+        }
+
+        private static dynamic IsNotSame(
+         DateTimeOffset firstDate,
+         DateTimeOffset secondDate,
+         string secondDateName) => new
+         {
+             Condition = firstDate != secondDate,
+             Message = $"Date is not same as {secondDateName}"
+         };
+
+        private dynamic IsNotRecent(DateTimeOffset date) => new
+        {
+            Condition = IsDateNotRecent(date),
+            Message = "Date is not recent"
+        };
+
+        private bool IsDateNotRecent(DateTimeOffset date)
+        {
+            DateTimeOffset currentDateTime = this.dateTimeBroker.GetCurrentDateTimeOffset();
+            TimeSpan timeDifference = currentDateTime.Subtract(date);
+
+            return timeDifference.TotalSeconds is > 60 or < 0;
         }
 
         private dynamic IsInvalid(Guid id) => new

@@ -14,11 +14,8 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
     {
         private readonly IStorageBroker storageBroker;
         private readonly ILoggingBroker loggingBroker;
-<<<<<<< Updated upstream
         private readonly IDateTimeBroker dateTimeBroker;
-=======
-        private readonly IDateTime
->>>>>>> Stashed changes
+
 
         public VideoMetadataService(
             IStorageBroker storageBroker,
