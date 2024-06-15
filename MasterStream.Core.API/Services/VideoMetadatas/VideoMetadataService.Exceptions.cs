@@ -25,20 +25,24 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             }
             catch (NullVideoMetadataException nullVideoMetadataException)
             {
-                throw CreateAndLogValidationExceptionAndIt(nullVideoMetadataException);
+                throw CreateAndLogValidationException(nullVideoMetadataException);
             }
             catch (InvalidVideoMetadataException invalidVideoMetadataException)
             {
-                throw CreateAndLogValidationExceptionAndIt(invalidVideoMetadataException);
+                throw CreateAndLogValidationException(invalidVideoMetadataException);
             }
             catch (SqlException sqlException)
             {
                 var failedVideoMetadataStorageException =
                     new FailedVideoMetadataStorageException(
-                        message: "Failed video metadata storage error occured, please contact support.",
+                        message: "Failed Video Metadata storage error occured, please contact support.",
                         innerException: sqlException);
 
                 throw CreateAndLogCriticalDependencyException(failedVideoMetadataStorageException);
+            }
+            catch (NotFoundVideoMetadataException notFoundVidoeMetadataException)
+            {
+                throw CreateAndLogValidationException(notFoundVidoeMetadataException);
             }
             catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
             {
@@ -139,7 +143,7 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             return videoMetadataDependencyServiceException;
         }
 
-        private VideoMetadataValidationException CreateAndLogValidationExceptionAndIt(
+        private VideoMetadataValidationException CreateAndLogValidationException(
             Xeption exception)
         {
             var videoMetadataValidationException =
@@ -154,7 +158,7 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
 
         private VideoMetadataDependencyException CreateAndLogCriticalDependencyException(Xeption exception)
         {
-            VideoMetadataDependencyException videoMetadataDependencyException =
+            var videoMetadataDependencyException =
                 new VideoMetadataDependencyException(
                     message: "Video metadata dependency error occured, fix the errors and try again.",
                     innerException: exception);

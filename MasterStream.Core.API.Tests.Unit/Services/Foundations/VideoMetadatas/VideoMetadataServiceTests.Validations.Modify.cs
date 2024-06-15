@@ -22,7 +22,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
             var expectedVideoMetadataValidationException =
                 new VideoMetadataValidationException(
-                    message: "Video Metadata Validation Exception occured, fix the errors and try again.",
+                    message: "Video metadata validation error occured, fix errors and try again",
                     innerException: nullVideoMetadataException);
 
             // when
@@ -59,31 +59,31 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
             };
 
             var invalidVideoMetadataException =
-                new InvalidVideoMetadataException(message: "Video Metadata is invalid.");
+                new InvalidVideoMetadataException(message: "Video metadata is invalid");
 
             invalidVideoMetadataException.AddData(
                 key: nameof(VideoMetadata.Id),
-                values: "Id is required.");
+                values: "Id is required");
 
             invalidVideoMetadataException.AddData(
                 key: nameof(VideoMetadata.Title),
-                values: "Text is required.");
+                values: "Text is required");
 
             invalidVideoMetadataException.AddData(
                 key: nameof(VideoMetadata.BlobPath),
-                values: "Text is required.");
+                values: "Text is required");
 
             invalidVideoMetadataException.AddData(
                 key: nameof(VideoMetadata.CreatedDate),
-                values: "Date is required.");
+                values: "Date is required");
 
             invalidVideoMetadataException.AddData(
                 key: nameof(VideoMetadata.UpdatedDate),
-                values: "Date is required.");
+                values: "Date is required");
 
             var expectedVideoMetadataValidationException =
                 new VideoMetadataValidationException(
-                    message: "Video Metadata Validation Exception occured, fix the errors and try again.",
+                    message: "Video metadata validation error occured, fix errors and try again",
                     innerException: invalidVideoMetadataException);
 
             // when
@@ -124,7 +124,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
             var expectedVideoMetadataValidationException =
                 new VideoMetadataValidationException(
-                    message: "Video Metadata Validation Exception occured, fix the errors and try again.",
+                    message: "Video metadata validation error occured, fix errors and try again",
                     innerException: notFoundVideoMetadataException);
 
             this.storageBrokerMock.Setup(broker =>
@@ -168,7 +168,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
             var invalidVideoMetadataException =
                 new InvalidVideoMetadataException(
-                    message: "Video Metadata is invalid.");
+                    message: "Video metadata is invalid");
 
             invalidVideoMetadataException.AddData(
                 key: nameof(VideoMetadata.CreatedDate),
@@ -176,7 +176,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
             var expectedVideoMetadataValidationException =
                 new VideoMetadataValidationException(
-                    message: "Video Metadata Validation Exception occured, fix the errors and try again.",
+                    message: "Video metadata validation error occured, fix errors and try again",
                     innerException: invalidVideoMetadataException);
 
             this.storageBrokerMock.Setup(broker =>
