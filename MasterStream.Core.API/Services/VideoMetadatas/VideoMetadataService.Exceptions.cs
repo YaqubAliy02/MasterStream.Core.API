@@ -40,6 +40,7 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             }
         }
 
+
         private VideoMetadataValidationException CreateAndLogValidationExceptionAndIt(
             Xeption exception)
         {
