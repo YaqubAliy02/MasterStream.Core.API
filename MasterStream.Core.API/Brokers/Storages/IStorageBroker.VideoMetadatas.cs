@@ -1,4 +1,9 @@
-﻿using MasterStream.Core.API.Models.VideoMetadatas;
+﻿//--------------------------
+// TARTEEB LLC               
+// ALL RIGHTS RESERVED      
+//--------------------------
+
+using MasterStream.Core.API.Models.VideoMetadatas;
 
 namespace MasterStream.Core.API.Brokers.Storages
 {

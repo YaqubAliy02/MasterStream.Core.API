@@ -25,5 +25,4 @@
 	<ItemGroup>
 		<InternalsVisibleTo Include="MasterStream.Core.API.Tests.Unit" />
 	</ItemGroup>
-
 </Project>

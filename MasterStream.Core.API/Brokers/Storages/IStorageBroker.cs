@@ -1,4 +1,9 @@
-﻿namespace MasterStream.Core.API.Brokers.Storages
+﻿//--------------------------
+// TARTEEB LLC               
+// ALL RIGHTS RESERVED      
+//--------------------------
+
+namespace MasterStream.Core.API.Brokers.Storages
 {
     public partial interface IStorageBroker
     {}
