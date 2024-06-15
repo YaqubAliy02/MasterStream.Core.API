@@ -1,4 +1,9 @@
-﻿using MasterStream.Core.API.Models.Exceptions;
+﻿//--------------------------
+// TARTEEB LLC               
+// ALL RIGHTS RESERVED      
+//--------------------------
+
+using MasterStream.Core.API.Models.Exceptions;
 using MasterStream.Core.API.Models.VideoMetadatas;
 using MasterStream.Core.API.Services.VideoMetadatas;
 using Microsoft.AspNetCore.Mvc;
