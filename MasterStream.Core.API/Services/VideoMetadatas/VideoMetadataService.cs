@@ -65,5 +65,10 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
 
                 return maybeVideoMetadata;
             });
+
+        public ValueTask<VideoMetadata> RemoveVideoMetadataByIdAsync(Guid videoMetadataId)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
