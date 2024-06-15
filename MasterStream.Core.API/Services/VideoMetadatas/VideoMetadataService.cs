@@ -30,9 +30,12 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
                 return await this.storageBroker.InsertVideoMetadataAsync(videoMetadata);
             });
 
-        public ValueTask<VideoMetadata> ModifyVideoMetadataAsync(VideoMetadata videoMetadata)
+        public async ValueTask<VideoMetadata> ModifyVideoMetadataAsync(VideoMetadata videoMetadata)
         {
-            throw new NotImplementedException();
+            VideoMetadata maybeVideoMetadata = 
+                await this.storageBroker.SelectVideoMetadataByIdAsync(videoMetadata.Id);
+
+            return await this.storageBroker.UpdateVideoMetadataAsync(videoMetadata);
         }
 
         public IQueryable<VideoMetadata> RetrieveAllVideoMetadatas() =>
@@ -40,6 +43,5 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             {
                 return this.storageBroker.SelectAllVideoMetadatas();
             });
-        
     }
 }
