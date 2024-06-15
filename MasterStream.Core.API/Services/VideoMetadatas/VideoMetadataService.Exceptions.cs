@@ -40,6 +40,14 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
 
                 throw CreateAndLogCriticalDependencyException(failedVideoMetadataStorageException);
             }
+            catch (DbUpdateConcurrencyException dbUpdateConcurrencyException)
+            {
+                var lockedVideoMetadataException = new LockedVideoMetadataException(
+                    "Video Metadata is locked, please try again.",
+                        dbUpdateConcurrencyException);
+
+                throw CreateAndLogDependencyValidationException(lockedVideoMetadataException);
+            }
             catch (DbUpdateException databaseUpdateException)
             {
                 var failedVideoMetadataStorage = new FailedVideoMetadataStorageException(
@@ -85,6 +93,17 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             this.loggingBroker.LogError(videoMetadataDependencyException);
 
             return videoMetadataDependencyException;
+        }
+
+        private VideoMetadataDependencyValidationException CreateAndLogDependencyValidationException(Xeption exception)
+        {
+            var videoMetadataDependencyValidationException = new VideoMetadataDependencyValidationException(
+                "Video Metadata dependency error occured. Fix errors and try again.",
+                    exception);
+
+            this.loggingBroker.LogError(videoMetadataDependencyValidationException);
+
+            return videoMetadataDependencyValidationException;
         }
 
         private VideoMetadataServiceException CreateAndLogVideoMetadataServiceErrorOccurs(Xeption exception)
