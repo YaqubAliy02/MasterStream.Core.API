@@ -56,6 +56,15 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
 
                 throw CreateAndLogDependencyException(failedVideoMetadataStorage);
             }
+            catch (Exception exception)
+            {
+                var failedVideoMetadataServiceException =
+                    new FailedVideoMetadataServiceException(
+                        "Unexpected error of Video Metadata occured",
+                            exception);
+
+                throw CreateAndLogVideoMetadataDependencyServiceErrorOccurs(failedVideoMetadataServiceException);
+            }
         }
 
         private IQueryable<VideoMetadata> TryCatch(
@@ -104,6 +113,18 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             this.loggingBroker.LogError(videoMetadataDependencyValidationException);
 
             return videoMetadataDependencyValidationException;
+        }
+
+        private VideoMetadataServiceException CreateAndLogVideoMetadataDependencyServiceErrorOccurs(Xeption exception)
+        {
+            var videoMetadataDependencyServiceException =
+                new VideoMetadataServiceException(
+                    "Unexpected service error occured. Contact support.",
+                        exception);
+
+            this.loggingBroker.LogError(videoMetadataDependencyServiceException);
+
+            return videoMetadataDependencyServiceException;
         }
 
         private VideoMetadataServiceException CreateAndLogVideoMetadataServiceErrorOccurs(Xeption exception)
