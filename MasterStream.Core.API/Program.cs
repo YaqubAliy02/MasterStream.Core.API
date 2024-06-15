@@ -1,26 +1,40 @@
+//--------------------------
+// TARTEEB LLC               
+// ALL RIGHTS RESERVED      
+//--------------------------
+
+using MasterStream.Core.API.Brokers.DateTimes;
+using MasterStream.Core.API.Brokers.Loggings;
 using MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages;
-var builder = WebApplication.CreateBuilder(args);
-
-// Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddTransient<IStorageBroker, StorageBroker>();
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+using MasterStream.Core.API.Services.VideoMetadatas;
+internal class Program
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    private static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddControllers();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
+        builder.Services.AddDbContext<StorageBroker>();
+        builder.Services.AddTransient<IStorageBroker, StorageBroker>();
+        builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
+        builder.Services.AddTransient<IDateTimeBroker, DateTimeBroker>();
+        builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();
+        var app = builder.Build();
+
+        if (app.Environment.IsDevelopment())
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI();
+        }
+
+        app.UseHttpsRedirection();
+
+        app.UseAuthorization();
+
+        app.MapControllers();
+
+        app.Run();
+    }
 }
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
-
-app.Run();

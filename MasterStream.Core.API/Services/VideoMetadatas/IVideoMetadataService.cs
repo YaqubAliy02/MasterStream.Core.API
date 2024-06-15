@@ -7,7 +7,7 @@ using MasterStream.Core.API.Models.VideoMetadatas;
 
 namespace MasterStream.Core.API.Services.VideoMetadatas
 {
-    internal interface IVideoMetadataService
+    public interface IVideoMetadataService
     {
         ValueTask<VideoMetadata> AddVideoMetadataAsync(VideoMetadata videoMetadata);
         ValueTask<VideoMetadata> RetrieveVideoMetadataByIdAsync(Guid videoMetadataId);

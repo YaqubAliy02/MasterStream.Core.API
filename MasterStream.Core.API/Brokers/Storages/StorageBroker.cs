@@ -53,6 +53,7 @@ namespace MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             optionsBuilder.UseSqlServer(connectionString);
         }
-
+        public override void Dispose()
+        { }
     }
 }
