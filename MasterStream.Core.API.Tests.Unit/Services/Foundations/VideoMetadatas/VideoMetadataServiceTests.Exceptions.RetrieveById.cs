@@ -5,6 +5,7 @@
 
 using FluentAssertions;
 using MasterStream.Core.API.Models.Exceptions;
+using MasterStream.Core.API.Models.VideoMetadatas;
 using Microsoft.Data.SqlClient;
 using Moq;
 
@@ -13,37 +14,41 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
     public partial class VideoMetadataServiceTests
     {
         [Fact]
-        public void ShouldThrowCriticalDependencyExceptionOnRetrieveAllWhenSqlExceptionOccursAndLogIt()
+        public async Task ShouldThrowCriticalDependencyExceptionOnRetrieveByIdIfsqlErrorsOccursAndLogItAsync()
         {
             //given
+            Guid someId = Guid.NewGuid();
             SqlException sqlException = GetSqlException();
 
-            var failedVideoMetadataStorageException =
+            FailedVideoMetadataStorageException failedVideoMetadataStorageException =
                 new FailedVideoMetadataStorageException(
                     "Failed Video Metadata storage error occured, please contact support.",
                         sqlException);
 
-            VideoMetadataDependencyException expectedVideoMetadataDependencyException =
+            var expectedVideoMetadataDependencyException =
                 new VideoMetadataDependencyException(
                     "Video metadata dependency error occured, fix the errors and try again.",
                         failedVideoMetadataStorageException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllVideoMetadatas()).Throws(sqlException);
+                broker.SelectVideoMetadataByIdAsync(It.IsAny<Guid>()))
+                    .ThrowsAsync(sqlException);
 
             //when
-            Action retrieveAllVideoMetadatasAction = () =>
-                this.videoMetadataService.RetrieveAllVideoMetadatas();
+            ValueTask<VideoMetadata> retrieveVideoMetadataByIdTask =
+                this.videoMetadataService.RetrieveVideoMetadataByIdAsync(someId);
 
             VideoMetadataDependencyException actualVideoMetadataDependencyException =
-                Assert.Throws<VideoMetadataDependencyException>(retrieveAllVideoMetadatasAction);
+                await Assert.ThrowsAsync<VideoMetadataDependencyException>(
+                    retrieveVideoMetadataByIdTask.AsTask);
 
             //then
             actualVideoMetadataDependencyException.Should().BeEquivalentTo(
                 expectedVideoMetadataDependencyException);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllVideoMetadatas(), Times.Once);
+                broker.SelectVideoMetadataByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
                 broker.LogCriticalError(It.Is(SameExceptionAs(expectedVideoMetadataDependencyException))),
@@ -51,18 +56,19 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
 
         [Fact]
-        public void ShouldThrowServiceExceptionOnRetrieveAllIfServiceErrorOccursAndLogItAsync()
+        public async Task ShouldThrowServiceExceptionOnRetrieveByIdIfDatabaseUpdateErrorOccursAndLogItAsync()
         {
             //given
-            string exceptionMessage = GetRandomString();
-            var serviceException = new Exception(exceptionMessage);
+            Guid someId = Guid.NewGuid();
+            var serviceException = new Exception();
 
             FailedVideoMetadataServiceException failedVideoMetadataServiceException =
                 new FailedVideoMetadataServiceException(
-                    "Unexpected error of Video Metadata occured.",
+                    "Unexpected error of Video Metadata occured",
                         serviceException);
 
             VideoMetadataServiceException expectedVideoMetadataServiceException =
@@ -71,21 +77,23 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
                         failedVideoMetadataServiceException);
 
             this.storageBrokerMock.Setup(broker =>
-                broker.SelectAllVideoMetadatas()).Throws(serviceException);
+                broker.SelectVideoMetadataByIdAsync(It.IsAny<Guid>()))
+                    .ThrowsAsync(serviceException);
 
             //when
-            Action retrieveAllVideoMetadatasAction = () =>
-                this.videoMetadataService.RetrieveAllVideoMetadatas();
+            ValueTask<VideoMetadata> retrieveVideoMetadataByIdTask =
+                this.videoMetadataService.RetrieveVideoMetadataByIdAsync(someId);
 
             VideoMetadataServiceException actualVideoMetadataServiceException =
-                Assert.Throws<VideoMetadataServiceException>(retrieveAllVideoMetadatasAction);
+                await Assert.ThrowsAsync<VideoMetadataServiceException>(
+                    retrieveVideoMetadataByIdTask.AsTask);
 
             //then
             actualVideoMetadataServiceException.Should().BeEquivalentTo(
                 expectedVideoMetadataServiceException);
 
             this.storageBrokerMock.Verify(broker =>
-                broker.SelectAllVideoMetadatas(),
+                broker.SelectVideoMetadataByIdAsync(It.IsAny<Guid>()),
                     Times.Once);
 
             this.loggingBrokerMock.Verify(broker =>
@@ -95,6 +103,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
         }
     }
 }

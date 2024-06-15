@@ -5,6 +5,7 @@
 
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
+using MasterStream.Core.API.Brokers.DateTimes;
 using MasterStream.Core.API.Brokers.Loggings;
 using MasterStream.Core.API.Models.VideoMetadatas;
 using MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages;
@@ -19,17 +20,21 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
     public partial class VideoMetadataServiceTests
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
+        private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
         private readonly IVideoMetadataService videoMetadataService;
 
         public VideoMetadataServiceTests()
         {
             this.storageBrokerMock = new Mock<IStorageBroker>();
+            this.dateTimeBrokerMock = new Mock<IDateTimeBroker>();
             this.loggingBrokerMock = new Mock<ILoggingBroker>();
 
-            this.videoMetadataService = new VideoMetadataService(
-                storageBroker: this.storageBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object);
+            this.videoMetadataService =
+                new VideoMetadataService(
+                    storageBroker: storageBrokerMock.Object,
+                    dateTimeBroker: dateTimeBrokerMock.Object,
+                    loggingBroker: loggingBrokerMock.Object);
         }
 
         private static string GetRandomString() =>
@@ -49,6 +54,9 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
         private static DateTimeOffset GetRandomDateTimeOffset() =>
             new DateTimeRange(earliestDate: DateTime.UnixEpoch).GetValue();
+
+        private static VideoMetadata CreateRandomVideoMetadata(DateTimeOffset dates) =>
+                CreateVideoMetadataFiller(date: dates).Create();
 
         private static Filler<VideoMetadata> CreateVideoMetadataFiller(DateTimeOffset date)
         {

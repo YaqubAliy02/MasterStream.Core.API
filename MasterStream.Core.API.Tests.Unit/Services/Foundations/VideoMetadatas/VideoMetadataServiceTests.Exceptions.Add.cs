@@ -14,47 +14,44 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
     public partial class VideoMetadataServiceTests
     {
         [Fact]
-
         public async Task ShouldThrowCriticalDependencyExceptionOnAddIfSqlErrorOccursAndLogItAsync()
         {
             //given
             VideoMetadata someVideoMetadata = CreateRandomVideoMetadata();
             SqlException sqlException = GetSqlException();
 
-            FailedVideoMetadataStorageException failedVideoMetadataStorageException =
+            var failedVideoMetadataStorageException =
                 new FailedVideoMetadataStorageException(
-                    message: "Failed video metadata error occured, contact to support",
-                    innerException: sqlException);
+                    "Failed Video Metadata storage error occured, please contact support.",
+                        sqlException);
 
             var expectedVideoMetadataDependencyException =
                 new VideoMetadataDependencyException(
-                    message: "Video metadata dependency error occured, fix the errors and try again",
-                    innerException: failedVideoMetadataStorageException);
+                    "Video metadata dependency error occured, fix the errors and try again.",
+                        failedVideoMetadataStorageException);
 
-            this.storageBrokerMock.Setup(broker =>
-                broker.InsertVideoMetadataAsync(someVideoMetadata))
-                    .ThrowsAsync(sqlException);
+            this.dateTimeBrokerMock.Setup(broker =>
+                broker.GetCurrentDateTimeOffset()).Throws(sqlException);
 
             //when
-            ValueTask<VideoMetadata> addVideoMetadata =
+            ValueTask<VideoMetadata> AddVideoMetadataTask =
                 this.videoMetadataService.AddVideoMetadataAsync(someVideoMetadata);
 
-            var actualVideoMetadataValidationException =
-                await Assert.ThrowsAsync<VideoMetadataDependencyException>(addVideoMetadata.AsTask);
+            VideoMetadataDependencyException actualVideoMetadataDependencyException =
+                await Assert.ThrowsAsync<VideoMetadataDependencyException>(AddVideoMetadataTask.AsTask);
 
             //then
-            actualVideoMetadataValidationException.Should()
-                .BeEquivalentTo(expectedVideoMetadataDependencyException);
+            actualVideoMetadataDependencyException.Should().BeEquivalentTo(expectedVideoMetadataDependencyException);
 
-            this.storageBrokerMock.Verify(broker =>
-                broker.InsertVideoMetadataAsync(someVideoMetadata),
-                   Times.Once);
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTimeOffset(),
+                    Times.Once());
 
             this.loggingBrokerMock.Verify(broker =>
-                broker.LogCriticalError(It.Is(SameExceptionAs(
-                    expectedVideoMetadataDependencyException))),
-                        Times.Once);
+                broker.LogCriticalError(It.Is(SameExceptionAs(expectedVideoMetadataDependencyException))),
+                    Times.Once);
 
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }

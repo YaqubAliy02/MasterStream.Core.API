@@ -24,7 +24,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
             var failedVideoMetadataStorageException =
                 new FailedVideoMetadataStorageException(
-                    message: "Failed video metadata storage error occured, please contact support.",
+                    message: "Failed Video Metadata storage error occured, please contact support.",
                     innerException: sqlException);
 
             var expectedVideoMetadataDependencyException =

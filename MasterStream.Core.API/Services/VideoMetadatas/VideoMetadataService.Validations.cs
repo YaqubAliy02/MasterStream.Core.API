@@ -19,7 +19,14 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
                 (Rule: IsInvalid(videoMetadata.Title), Parameter: nameof(VideoMetadata.Title)),
                 (Rule: IsInvalid(videoMetadata.BlobPath), Parameter: nameof(VideoMetadata.BlobPath)),
                 (Rule: IsInvalid(videoMetadata.CreatedDate), Parameter: nameof(VideoMetadata.CreatedDate)),
-                (Rule: IsInvalid(videoMetadata.UpdatedDate), Parameter: nameof(VideoMetadata.UpdatedDate))
+                (Rule: IsInvalid(videoMetadata.UpdatedDate), Parameter: nameof(VideoMetadata.UpdatedDate)),
+                (Rule: IsNotRecent(videoMetadata.CreatedDate), Parameter: nameof(VideoMetadata.CreatedDate)),
+
+                (Rule: IsNotSame(
+                    firstDate: videoMetadata.CreatedDate,
+                    secondDate: videoMetadata.UpdatedDate,
+                    secondDateName: nameof(VideoMetadata.UpdatedDate)),
+                Parameter: nameof(VideoMetadata.CreatedDate))
                 );
         }
 
@@ -65,6 +72,9 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             }
         }
 
+        public void ValidateVideoMetadataId(Guid videoMetadataId) =>
+           Validate((Rule: IsInvalid(videoMetadataId), Parameter: nameof(VideoMetadata.Id)));
+
         private static dynamic IsNotSame(
             DateTimeOffset firstDate,
             DateTimeOffset secondDate,
@@ -81,6 +91,20 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
                 throw new NullVideoMetadataException(
                     message: "Video metadata is null");
             }
+        }
+
+        private dynamic IsNotRecent(DateTimeOffset date) => new
+        {
+            Condition = IsDateNotRecent(date),
+            Message = "Date is not recent"
+        };
+
+        private bool IsDateNotRecent(DateTimeOffset date)
+        {
+            DateTimeOffset currentDateTime = this.dateTimeBroker.GetCurrentDateTimeOffset();
+            TimeSpan timeDifference = currentDateTime.Subtract(date);
+
+            return timeDifference.TotalSeconds is > 60 or < 0;
         }
 
         private dynamic IsInvalid(Guid id) => new
@@ -101,7 +125,6 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
             Message = "Date is required"
         };
 
-        //Validations engine
         private void Validate(params (dynamic Rule, string Parameter)[] validations)
         {
             var invalidVideoMetadataException = new InvalidVideoMetadataException(
