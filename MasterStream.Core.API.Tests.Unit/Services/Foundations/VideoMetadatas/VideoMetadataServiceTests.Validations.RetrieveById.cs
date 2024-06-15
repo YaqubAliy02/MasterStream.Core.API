@@ -1,12 +1,12 @@
-﻿using FluentAssertions;
+﻿//--------------------------
+// TARTEEB LLC               
+// ALL RIGHTS RESERVED      
+//--------------------------
+
+using FluentAssertions;
 using MasterStream.Core.API.Models.Exceptions;
 using MasterStream.Core.API.Models.VideoMetadatas;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 {
