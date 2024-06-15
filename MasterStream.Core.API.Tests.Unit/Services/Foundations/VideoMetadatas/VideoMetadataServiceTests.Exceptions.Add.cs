@@ -149,5 +149,48 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
             this.storageBrokerMock.VerifyNoOtherCalls();
             this.loggingBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowDependencyExceptionOnAddIfDbUpdateErrorOccursAndLogItAsync()
+        {
+            //given
+            VideoMetadata someVideoMetadata = CreateRandomVideoMetadata();
+            var dbUpdateException = new DbUpdateException();
+
+            var failedVideoMetadataStorageException = new FailedVideoMetadataStorageException(
+                "Failed Video Metadata storage error occured, please contact support.",
+                    dbUpdateException);
+
+            var expectedVideoMetadataDependencyException = new VideoMetadataDependencyException(
+                "Video Metadata dependency exception error occured, please contact support.",
+                    failedVideoMetadataStorageException);
+
+            this.dateTimeBrokerMock.Setup(broker =>
+               broker.GetCurrentDateTimeOffset())
+                   .Throws(dbUpdateException);
+
+            //when
+            ValueTask<VideoMetadata> addVideoMetadataTask =
+                this.videoMetadataService.AddVideoMetadataAsync(someVideoMetadata);
+
+            VideoMetadataDependencyException actualVideoMetadataDependencyException =
+                await Assert.ThrowsAsync<VideoMetadataDependencyException>(addVideoMetadataTask.AsTask);
+
+            //then
+            actualVideoMetadataDependencyException.Should().BeEquivalentTo(expectedVideoMetadataDependencyException);
+
+            this.dateTimeBrokerMock.Verify(broker =>
+                broker.GetCurrentDateTimeOffset(), Times.Once);
+
+            this.loggingBrokerMock.Verify(broker => broker.LogError(It.Is(
+                SameExceptionAs(expectedVideoMetadataDependencyException))), Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.UpdateVideoMetadataAsync(It.IsAny<VideoMetadata>()), Times.Never);
+
+            this.dateTimeBrokerMock.VerifyNoOtherCalls();
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
