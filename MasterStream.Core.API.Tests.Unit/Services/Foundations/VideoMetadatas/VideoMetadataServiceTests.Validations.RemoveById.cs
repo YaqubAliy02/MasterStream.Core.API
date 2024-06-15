@@ -58,5 +58,54 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
             this.loggingBrokerMock.VerifyNoOtherCalls();
             this.storageBrokerMock.VerifyNoOtherCalls();
         }
+
+        [Fact]
+        public async Task ShouldThrowValidationExceptionOnRemoveByIdIfVideoMetadataIsNullAndLogItAsync()
+        {
+            // given
+            Guid someId = Guid.NewGuid();
+            VideoMetadata nonExistVideoMetadata = null;
+
+            var notFoundVideoMetadataException =
+                new NotFoundVideoMetadataException(
+                    message: $"Couldn't find video metadata with id {someId}");
+
+            var expectedVideoMetadataValidationException =
+                new VideoMetadataValidationException(
+                    message: "Video Metadata Validation Exception occured, fix the errors and try again.",
+                    innerException: notFoundVideoMetadataException);
+
+            this.storageBrokerMock.Setup(broker =>
+                broker.SelectVideoMetadataByIdAsync(It.IsAny<Guid>()))
+                    .ReturnsAsync(nonExistVideoMetadata);
+
+            // when
+            ValueTask<VideoMetadata> removeVideoMetadataTask =
+                this.videoMetadataService.RemoveVideoMetadataByIdAsync(someId);
+
+            VideoMetadataValidationException actualVideoMetadataValidationException =
+                await Assert.ThrowsAsync<VideoMetadataValidationException>(
+                    removeVideoMetadataTask.AsTask);
+
+            // then
+            actualVideoMetadataValidationException.Should().BeEquivalentTo(
+                expectedVideoMetadataValidationException);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.SelectVideoMetadataByIdAsync(It.IsAny<Guid>()),
+                    Times.Once);
+
+            this.storageBrokerMock.Verify(broker =>
+                broker.DeleteVideoMetadataAsync(It.IsAny<VideoMetadata>()),
+                    Times.Never);
+
+            this.loggingBrokerMock.Verify(broker =>
+                broker.LogError(It.Is(SameExceptionAs(
+                    expectedVideoMetadataValidationException))),
+                        Times.Once);
+
+            this.storageBrokerMock.VerifyNoOtherCalls();
+            this.loggingBrokerMock.VerifyNoOtherCalls();
+        }
     }
 }
