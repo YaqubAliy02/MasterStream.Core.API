@@ -5,7 +5,9 @@
 
 using System.Linq.Expressions;
 using System.Runtime.Serialization;
+using MasterStream.Core.API.Brokers.DateTimes;
 using MasterStream.Core.API.Brokers.Loggings;
+using MasterStream.Core.API.Brokers.Storages;
 using MasterStream.Core.API.Models.VideoMetadatas;
 using MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages;
 using MasterStream.Core.API.Services.VideoMetadatas;
@@ -20,6 +22,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
     {
         private readonly Mock<IStorageBroker> storageBrokerMock;
         private readonly Mock<ILoggingBroker> loggingBrokerMock;
+        private readonly Mock<IDateTimeBroker> dateTimeBrokerMock;
         private readonly IVideoMetadataService videoMetadataService;
 
         public VideoMetadataServiceTests()
@@ -29,7 +32,9 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
             this.videoMetadataService = new VideoMetadataService(
                 storageBroker: this.storageBrokerMock.Object,
-                loggingBroker: this.loggingBrokerMock.Object);
+                loggingBroker: this.loggingBrokerMock.Object,
+                dateTimeBroker: this.dateTimeBrokerMock.Object
+                );
         }
 
         private static string GetRandomString() =>
