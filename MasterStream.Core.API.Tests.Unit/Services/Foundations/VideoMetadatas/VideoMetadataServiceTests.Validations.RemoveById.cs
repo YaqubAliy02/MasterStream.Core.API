@@ -72,7 +72,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
             var expectedVideoMetadataValidationException =
                 new VideoMetadataValidationException(
-                    message: "Video Metadata Validation Exception occured, fix the errors and try again.",
+                    message: "Video metadata validation error occured, fix errors and try again",
                     innerException: notFoundVideoMetadataException);
 
             this.storageBrokerMock.Setup(broker =>
