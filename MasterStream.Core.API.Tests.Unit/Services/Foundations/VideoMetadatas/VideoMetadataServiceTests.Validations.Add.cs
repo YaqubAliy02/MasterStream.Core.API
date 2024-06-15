@@ -80,7 +80,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
                 values: "Text is required");
 
             invalidVideoMetadataException.AddData(
-                key: nameof(VideoMetadata.CreatedAt),
+                key: nameof(VideoMetadata.CreatedDate),
                 values: "Date is required");
 
             invalidVideoMetadataException.AddData(
