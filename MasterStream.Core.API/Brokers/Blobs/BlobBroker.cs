@@ -7,7 +7,7 @@ using Azure.Storage.Blobs;
 
 namespace MasterStream.Core.API.Brokers.Blobs
 {
-    public class BlobBroker : IBlobBroker
+    public partial class BlobBroker : IBlobBroker
     {
         private readonly string blobConnectionString;
         private readonly string blobContainerName;
