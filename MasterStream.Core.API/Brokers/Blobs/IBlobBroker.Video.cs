@@ -11,5 +11,6 @@ namespace MasterStream.Core.API.Brokers.Blobs
     {
         Task<string> UploadVideoAsync(Stream fileStream, string fileName, string contentType);
         Task<List<Video>> GetAllVideosAsync();
+        Task<Video> SelectVideoByIdAsync(Guid id);
     }
 }

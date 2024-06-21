@@ -45,5 +45,35 @@ namespace MasterStream.Core.API.Brokers.Blobs
             }
             return videos;
         }
+
+        public async Task<Video> SelectVideoByIdAsync(Guid id)
+        {
+            var blobServiceClient = new BlobServiceClient(blobConnectionString);
+            var blobContainerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
+            var blobItems = blobContainerClient.GetBlobsAsync();
+            var allowedExtensions = new[] { ".mp4", ".avi", ".mov" };
+
+            await foreach (BlobItem blobItem in blobItems)
+            {
+                var blobClient = blobContainerClient.GetBlobClient(blobItem.Name);
+                var extension = Path.GetExtension(blobItem.Name);
+
+                if (blobItem.Name.Contains(id.ToString()) && allowedExtensions.Contains(extension))
+                {
+                    var properties = await blobClient.GetPropertiesAsync();
+
+                    return new Video
+                    {
+                        Id = id,
+                        FileName = blobItem.Name,
+                        ContentType = properties.Value.ContentType,
+                        Size = properties.Value.ContentLength,
+                        BlobUri = blobClient.Uri.ToString(),
+                        UploadedDate= properties.Value.CreatedOn.DateTime
+                    };
+                }
+            }
+            return null;
+        }
     }
 }
