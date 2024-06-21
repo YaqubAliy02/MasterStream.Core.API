@@ -14,7 +14,7 @@ namespace MasterStream.Core.API.Brokers.Blobs
         public async Task<string> UploadVideoAsync(Stream fileStream, string fileName, string contentType) =>
             await UploadAsync(fileStream, fileName, contentType);
 
-        public async Task<List<Video>> GetAllVideosAsync()
+        public async Task<List<Video>> SelectAllVideosAsync()
         {
             var blobServiceClient = new BlobServiceClient(blobConnectionString);
             var blobContainerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
