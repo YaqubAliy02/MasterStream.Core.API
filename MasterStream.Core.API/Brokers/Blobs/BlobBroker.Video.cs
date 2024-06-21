@@ -17,7 +17,7 @@ namespace MasterStream.Core.API.Brokers.Blobs
         public async Task<List<Video>> SelectAllVideosAsync()
         {
             var blobServiceClient = new BlobServiceClient(blobConnectionString);
-            var blobContainerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
+            var blobContainerClient = blobServiceClient.GetBlobContainerClient(videoContainerName);
             var blobItems = blobContainerClient.GetBlobsAsync();
             var allowedExtensions = new[] { ".mp4", ".avi", ".mov" };
 
@@ -49,7 +49,7 @@ namespace MasterStream.Core.API.Brokers.Blobs
         public async Task<Video> SelectVideoByIdAsync(Guid id)
         {
             var blobServiceClient = new BlobServiceClient(blobConnectionString);
-            var blobContainerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
+            var blobContainerClient = blobServiceClient.GetBlobContainerClient(videoContainerName);
             var blobItems = blobContainerClient.GetBlobsAsync();
             var allowedExtensions = new[] { ".mp4", ".avi", ".mov" };
 

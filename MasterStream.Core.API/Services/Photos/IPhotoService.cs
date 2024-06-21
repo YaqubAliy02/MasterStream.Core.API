@@ -1,4 +1,9 @@
-﻿namespace MasterStream.Core.API.Services.Photos
+﻿//--------------------------
+// TARTEEB LLC               
+// ALL RIGHTS RESERVED      
+//--------------------------
+
+namespace MasterStream.Core.API.Services.Photos
 {
     public interface IPhotoService
     {

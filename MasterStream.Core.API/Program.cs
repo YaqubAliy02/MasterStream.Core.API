@@ -7,6 +7,7 @@ using MasterStream.Core.API.Brokers.Blobs;
 using MasterStream.Core.API.Brokers.DateTimes;
 using MasterStream.Core.API.Brokers.Loggings;
 using MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages;
+using MasterStream.Core.API.Services.Photos;
 using MasterStream.Core.API.Services.VideoMetadatas;
 using MasterStream.Core.API.Services.Videos;
 internal class Program
@@ -25,6 +26,7 @@ internal class Program
         builder.Services.AddTransient<IDateTimeBroker, DateTimeBroker>();
         builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();
         builder.Services.AddTransient<IVideoService, VideoService>();
+        builder.Services.AddTransient<IPhotoService, PhotoService>();
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())

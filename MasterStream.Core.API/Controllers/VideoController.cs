@@ -21,7 +21,7 @@ public class VideoController : RESTFulController
     }
 
     [HttpPost("upload")]
-    public async Task<IActionResult> UploadMedia(IFormFile file)
+    public async Task<IActionResult> UploadVideo(IFormFile file)
     {
         if (file == null || !ValidateVideo(file))
         {
