@@ -10,6 +10,7 @@ namespace MasterStream.Core.API.Brokers.Blobs
     public partial interface IBlobBroker
     {
         Task<string> UploadVideoAsync(Stream fileStream, string fileName, string contentType);
-        Task<List<Video>> GetAllVideosAsync();
+        Task<List<Video>> SelectAllVideosAsync();
+        Task<Video> SelectVideoByIdAsync(Guid id);
     }
 }
