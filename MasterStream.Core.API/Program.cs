@@ -3,6 +3,7 @@
 // ALL RIGHTS RESERVED      
 //--------------------------
 
+using MasterStream.Core.API.Brokers.Blobs;
 using MasterStream.Core.API.Brokers.DateTimes;
 using MasterStream.Core.API.Brokers.Loggings;
 using MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages;
@@ -18,6 +19,7 @@ internal class Program
         builder.Services.AddSwaggerGen();
         builder.Services.AddDbContext<StorageBroker>();
         builder.Services.AddTransient<IStorageBroker, StorageBroker>();
+        builder.Services.AddTransient<IBlobBroker, BlobBroker>();
         builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
         builder.Services.AddTransient<IDateTimeBroker, DateTimeBroker>();
         builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();
