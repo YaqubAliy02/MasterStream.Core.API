@@ -44,6 +44,13 @@ public class VideoController : RESTFulController
         return Ok(video);
     }
 
+    [HttpGet("videos")]
+    public async Task<IActionResult> GetAllVideos()
+    {
+        var videos = await videoService.RetrieveAllVideosAsync();
+        return Ok(videos);
+    }
+
     private bool ValidateVideo(IFormFile file)
     {
         var allowedExtensions = new[] { ".mp4", ".avi", ".mov" };
