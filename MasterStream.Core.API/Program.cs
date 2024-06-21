@@ -8,6 +8,7 @@ using MasterStream.Core.API.Brokers.DateTimes;
 using MasterStream.Core.API.Brokers.Loggings;
 using MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages;
 using MasterStream.Core.API.Services.VideoMetadatas;
+using MasterStream.Core.API.Services.Videos;
 internal class Program
 {
     private static void Main(string[] args)
@@ -23,6 +24,7 @@ internal class Program
         builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
         builder.Services.AddTransient<IDateTimeBroker, DateTimeBroker>();
         builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();
+        builder.Services.AddTransient<IVideoService, VideoService>();
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
