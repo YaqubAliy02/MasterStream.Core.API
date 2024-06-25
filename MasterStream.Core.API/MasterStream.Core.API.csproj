@@ -25,6 +25,13 @@
   </ItemGroup>
 
 	<ItemGroup>
+		<KnownRuntimePack Update="@(KnownRuntimePack)">
+			<LatestRuntimeFrameworkVersion Condition="'%(TargetFramework)' == 'net8.0'">8.0.0</LatestRuntimeFrameworkVersion>
+		</KnownRuntimePack>
+	</ItemGroup>
+
+
+	<ItemGroup>
 		<InternalsVisibleTo Include="MasterStream.Core.API.Tests.Unit" />
 	</ItemGroup>
 

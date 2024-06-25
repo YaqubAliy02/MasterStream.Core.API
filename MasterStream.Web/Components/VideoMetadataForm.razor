@@ -1,0 +1,80 @@
+﻿@page "/api/upload"
+@using MasterStream.Core.API.Models.VideoMetadatas
+@using MasterStream.Web.Services
+@inject IVideoMetadataService videoMetadataService 
+
+<h3>Upload Video and Photo</h3>
+
+<EditForm Model="@videoMetadata">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label>Upload Video:</label>
+        <InputFile OnChange="HandleVideoUpload" accept=".mp4,.avi" />
+    </div>
+    <div>
+        <label>Upload Photo:</label>
+        <InputFile OnChange="HandlePhotoUpload" accept=".jpg,.jpeg,.png" />
+    </div>
+    <div>
+        <label>Title:</label>
+        <InputText @bind-Value="@videoMetadata.Title" />
+    </div>
+    <div>
+        <label>Description:</label>
+        <InputTextArea @bind-Value="@videoMetadata.Description" />
+    </div>
+
+    <button type="submit">Save</button>
+</EditForm>
+
+@code {
+    private VideoMetadata videoMetadata = new VideoMetadata();
+    private string videoBlobUri;
+    private string photoBlobUri;
+
+    private async Task HandleVideoUpload(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+            using var stream = file.OpenReadStream();
+            videoBlobUri = await videoMetadataService.UploadVideoAsync(stream, file.Name, file.ContentType);
+            videoMetadata.BlobPath = videoBlobUri;
+        }
+    }
+
+    private async Task HandlePhotoUpload(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+            using var stream = file.OpenReadStream();
+            photoBlobUri = await UploadAsync(stream, file.Name, file.ContentType);
+            videoMetadata.Thubnail = photoBlobUri;
+        }
+    }
+
+    private async Task<string> UploadAsync(Stream fileStream, string fileName, string contentType)
+    {
+        // Implement your upload logic here, similar to your existing UploadAsync method
+        // This method should return the blob URI after uploading the file
+        return ""; // Replace this with actual blob URI
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        // After form submission, you can save videoMetadata or perform additional actions
+        // For example, you might want to make an API call to save the metadata
+        // var response = await videoMetadataService.UploadVideoAsync()
+        // if (response.IsSuccessStatusCode)
+        // {
+        //     // Handle success, such as showing a success message or redirecting
+        // }
+        // else
+        // {
+        //     // Handle failure, show error message or retry logic
+        // }
+    }
+}

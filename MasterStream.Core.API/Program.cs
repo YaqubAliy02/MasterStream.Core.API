@@ -27,6 +27,18 @@ internal class Program
         builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();
         builder.Services.AddTransient<IVideoService, VideoService>();
         builder.Services.AddTransient<IPhotoService, PhotoService>();
+
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowAll",
+                builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+        });
+
         var app = builder.Build();
 
         if (app.Environment.IsDevelopment())
@@ -36,6 +48,8 @@ internal class Program
         }
 
         app.UseHttpsRedirection();
+
+        app.UseCors("AllowAll");
 
         app.UseAuthorization();
 
