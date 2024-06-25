@@ -1,4 +1,5 @@
 using MasterStream.Web.Components;
+using MasterStream.Web.Services;
 
 internal class Program
 {
@@ -8,6 +9,11 @@ internal class Program
 
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
+
+        builder.Services.AddHttpClient<IVideoMetadataService, VideoMetadataService>(
+           client => {
+               client.BaseAddress = new Uri("https://localhost:7122/");
+           });
 
         var app = builder.Build();
 

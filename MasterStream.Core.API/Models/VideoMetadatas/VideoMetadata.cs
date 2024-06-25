@@ -14,6 +14,5 @@ namespace MasterStream.Core.API.Models.VideoMetadatas
         public string Thubnail { get; set; }
         public DateTimeOffset CreatedDate { get; set; }
         public DateTimeOffset UpdatedDate { get; set; }
-
     }
 }

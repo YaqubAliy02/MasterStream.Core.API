@@ -7,14 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Components\Layout\MainLayout.razor.css" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Include="Components\Layout\MainLayout.razor.css" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\MasterStream.Core.API\MasterStream.Core.API.csproj" />
   </ItemGroup>
 

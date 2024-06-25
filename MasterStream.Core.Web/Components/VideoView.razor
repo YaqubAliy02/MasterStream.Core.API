@@ -1,0 +1,28 @@
+﻿@page "/videoplayer/{videoMetadataId:guid}"
+@inject HttpClient Http
+
+<h3>Video Player</h3>
+
+@if (videoUrl != null)
+{
+    <video width="600" controls>
+        <source src="@videoUrl" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+}
+else
+{
+    <p>Loading...</p>
+}
+
+@code {
+    [Parameter]
+    public Guid VideoMetadataId { get; set; }
+
+    private string videoUrl;
+
+    protected override async Task OnInitializedAsync()
+    {
+        videoUrl = $"https://localhost:7122/api/stream/{VideoMetadataId}";
+    }
+}

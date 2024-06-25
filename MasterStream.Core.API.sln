@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterStream.Core.API.Tests
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterStream.API.Infrastructure.Build", "MasterStream.API.Infrastructure.Build\MasterStream.API.Infrastructure.Build.csproj", "{63CAA6BF-9BDD-4D63-8CCB-52C38BEAEFB9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MasterStream.Web", "MasterStream.Web\MasterStream.Web.csproj", "{76194D95-EC6F-47B0-851B-C586FCF76586}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterStream.Web", "MasterStream.Web\MasterStream.Web.csproj", "{76194D95-EC6F-47B0-851B-C586FCF76586}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MasterStream.Core.Web", "MasterStream.Core.Web\MasterStream.Core.Web.csproj", "{A050ACB1-6092-4628-96D7-37EB1CBFD196}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{76194D95-EC6F-47B0-851B-C586FCF76586}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76194D95-EC6F-47B0-851B-C586FCF76586}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76194D95-EC6F-47B0-851B-C586FCF76586}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A050ACB1-6092-4628-96D7-37EB1CBFD196}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A050ACB1-6092-4628-96D7-37EB1CBFD196}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A050ACB1-6092-4628-96D7-37EB1CBFD196}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A050ACB1-6092-4628-96D7-37EB1CBFD196}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
