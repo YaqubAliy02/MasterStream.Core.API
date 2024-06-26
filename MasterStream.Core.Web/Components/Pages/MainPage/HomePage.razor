@@ -1,21 +1,96 @@
 ﻿@page "/"
+@using System.Text.Json
+@using MasterStream.Core.API.Models.Photos
+@using MasterStream.Core.Web.Services
+
+@inject BlobService BlobService
+@inject HttpClient Http
 
 <PageTitle>Home Page</PageTitle>
 
 <div class="container">
-    <div class="row justify-content-center">
+    <div class="row justify-content-center mb-5">
         <div class="col-md-6">
             <form class="d-flex">
                 <input class="form-control me-2 border-1 border focus-ring-none"
-                    style="border-radius: 10px;" type="search" placeholder="Search" aria-label="Search">
+                       style="border-radius: 10px;" type="search" placeholder="Search" aria-label="Search">
 
                 <button class="btn btn-outline-primary me-5 border-1"
-                    style="border-radius: 10px" type="submit">Search
+                        style="border-radius: 10px" type="submit">
+                    Search
                 </button>
                 <a href="api/video/upload">
                     <img class="ms-5" style="width: 50%" src="https://img.icons8.com/?size=100&id=4c07dCRw2PVV&format=png&color=000000" alt="Add Icon" />
-                    </a>
+                </a>
             </form>
         </div>
     </div>
+
+    @if (imageUrls is null)
+    {
+        <p>
+            <em>Loading...</em>
+        </p>
+    }
+    else
+    {
+        @foreach (var imageUrl in imageUrls)
+        {
+            <div class="card mt-5" style="width: 18rem;">
+                <img src="@imageUrl" alt="Image">
+                <div class="card-body">
+                    <h5>Title</h5>
+                    <p class="card-text">Description</p>
+                    <p>Created Date</p>
+                </div>
+            </div>
+        }
+    }
 </div>
+
+
+
+@code {
+    /*List<string> ImageUrls = new List<string>();
+
+    [Parameter]
+    [SupplyParameterFromQuery(Name = "photoUrl")]
+    public string Video { get; set; }
+    */
+    /* protected override async Task OnInitializedAsync()
+    {
+    try
+    {
+    var response = await Http.GetAsync("https://localhost:7122/api/photo/photos");
+
+    var json = await response.Content.ReadAsStringAsync();
+    ImageUrls = JsonSerializer.Deserialize<List<string>>(json);
+
+        if (ImageUrls is null)
+        {
+        ImageUrls = new List<string>();
+    }
+    }
+    catch
+    {
+    ImageUrls = new List<string>();
+     }
+
+     } */
+
+
+    private List<string> imageUrls;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            imageUrls = await BlobService.ListBlobsAsync("photos");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
+
+}
