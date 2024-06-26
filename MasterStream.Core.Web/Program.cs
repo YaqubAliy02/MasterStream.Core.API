@@ -12,7 +12,7 @@ builder.Services.AddHttpClient<IVideoMetadataWebService, VideoMetadataWebService
     client.BaseAddress = new Uri("https://localhost:44329/");
 });
 
-builder.Services.AddScoped <BlobService>();
+builder.Services.AddScoped<BlobService>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -10,9 +10,9 @@ namespace MasterStream.Core.Web.Services
     public class BlobService
     {
         private readonly string storageAccount = "videosphere";
-/*        private readonly string accountKey = 
-            "sI1wjXiMEmz3QHF1B5NfIiLsz2WVE0s2+p2it4yxkVau+TVhRQkEWXEMCS/03eqZzyGiHztaWaTt+ASt62h//w==";
-        private readonly BlobContainerClient photoContainer;*/
+        /*        private readonly string accountKey = 
+                    "sI1wjXiMEmz3QHF1B5NfIiLsz2WVE0s2+p2it4yxkVau+TVhRQkEWXEMCS/03eqZzyGiHztaWaTt+ASt62h//w==";
+                private readonly BlobContainerClient photoContainer;*/
 
         private readonly string connectionString;
 
@@ -37,28 +37,28 @@ namespace MasterStream.Core.Web.Services
         }
 
 
-    /*   public BlobService()
-       {
-           var credential  = new StorageSharedKeyCredential(storageAccount, accountKey);
-           var blobUrl = $"https://{storageAccount}.blob.core.windows.net";
-           var client = new BlobServiceClient(new Uri(blobUrl), credential);
-           this.photoContainer = client.GetBlobContainerClient("photos");
-       }*/
+        /*   public BlobService()
+           {
+               var credential  = new StorageSharedKeyCredential(storageAccount, accountKey);
+               var blobUrl = $"https://{storageAccount}.blob.core.windows.net";
+               var client = new BlobServiceClient(new Uri(blobUrl), credential);
+               this.photoContainer = client.GetBlobContainerClient("photos");
+           }*/
 
 
-    /*  public async Task<List<Photo>> GetPhotos()
-      {
-              var photos = new List<Photo>();
-          var photoBlobs = this.photoContainer.GetBlobsAsync();
-
-          await foreach (var photo in photoBlobs)
+        /*  public async Task<List<Photo>> GetPhotos()
           {
-              var blob = this.photoContainer.GetBlobClient(photo.Name);
-              var url = blob.Uri.ToString();
-              photos.Add(new Photo { FileName = photo.Name, BlobUri = url });
-          }
+                  var photos = new List<Photo>();
+              var photoBlobs = this.photoContainer.GetBlobsAsync();
 
-          return photos;
-      }*/
-}
+              await foreach (var photo in photoBlobs)
+              {
+                  var blob = this.photoContainer.GetBlobClient(photo.Name);
+                  var url = blob.Uri.ToString();
+                  photos.Add(new Photo { FileName = photo.Name, BlobUri = url });
+              }
+
+              return photos;
+          }*/
+    }
 }
