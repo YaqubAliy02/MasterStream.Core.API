@@ -4,28 +4,23 @@
 //--------------------------
 
 using MasterStream.Core.API.Brokers.Blobs;
-using MasterStream.Core.API.Brokers.DateTimes;
-using MasterStream.Core.API.Brokers.Loggings;
+using MasterStream.Core.API.Models.Photos;
 
 namespace MasterStream.Core.API.Services.Photos
 {
     public class PhotoService : IPhotoService
     {
         private readonly IBlobBroker blobBroker;
-        private readonly ILoggingBroker loggingBroker;
-        private readonly IDateTimeBroker dateTimeBroker;
 
-        public PhotoService(
-            IBlobBroker blobBroker,
-            ILoggingBroker loggingBroker,
-            IDateTimeBroker dateTimeBroker)
+        public PhotoService(IBlobBroker blobBroker)
         {
             this.blobBroker = blobBroker;
-            this.loggingBroker = loggingBroker;
-            this.dateTimeBroker = dateTimeBroker;
         }
 
         public async Task<string> AddPhotoAsync(Stream fileStream, string fileName, string contentType) =>
             await this.blobBroker.UploadPhotoAsync(fileStream, fileName, contentType);
+
+        public Task<List<Photo>> RetrieveAllPhotosAsync() =>
+            this.blobBroker.SelectAllPhotosAsync();
     }
 }

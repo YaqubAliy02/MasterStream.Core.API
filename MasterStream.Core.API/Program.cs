@@ -3,6 +3,7 @@
 // ALL RIGHTS RESERVED      
 //--------------------------
 
+using Azure.Storage.Blobs;
 using MasterStream.Core.API.Brokers.Blobs;
 using MasterStream.Core.API.Brokers.DateTimes;
 using MasterStream.Core.API.Brokers.Loggings;
@@ -27,6 +28,7 @@ internal class Program
         builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();
         builder.Services.AddTransient<IVideoService, VideoService>();
         builder.Services.AddTransient<IPhotoService, PhotoService>();
+        builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration.GetConnectionString("BlobStorage")));
 
         builder.Services.AddCors(options =>
         {
