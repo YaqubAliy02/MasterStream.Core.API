@@ -9,11 +9,6 @@ namespace MasterStream.Core.Web.Services
 {
     public class BlobService
     {
-        private readonly string storageAccount = "videosphere";
-        /*        private readonly string accountKey = 
-                    "sI1wjXiMEmz3QHF1B5NfIiLsz2WVE0s2+p2it4yxkVau+TVhRQkEWXEMCS/03eqZzyGiHztaWaTt+ASt62h//w==";
-                private readonly BlobContainerClient photoContainer;*/
-
         private readonly string connectionString;
 
         public BlobService(IConfiguration configuration)
