@@ -398,3 +398,4 @@ FodyWeavers.xsd
 *.sln.iml
 /MasterStream.Core.API/appsettings.json
 /MasterStream.Core.API/appsettings.Development.json
+/MasterStream.Core.Web/appsettings.json
