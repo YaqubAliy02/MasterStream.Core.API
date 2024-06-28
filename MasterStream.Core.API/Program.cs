@@ -10,6 +10,7 @@ using MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages;
 using MasterStream.Core.API.Services.Photos;
 using MasterStream.Core.API.Services.VideoMetadatas;
 using MasterStream.Core.API.Services.Videos;
+using Microsoft.AspNetCore.Http.Features;
 internal class Program
 {
     private static void Main(string[] args)
@@ -37,6 +38,16 @@ internal class Program
                            .AllowAnyHeader()
                            .AllowAnyMethod();
                 });
+        });
+
+        builder.WebHost.ConfigureKestrel(serverOptions =>
+        {
+            serverOptions.Limits.MaxRequestBodySize = 104857600;
+        });
+
+        builder.Services.Configure<FormOptions>(options =>
+        {
+            options.MultipartBodyLengthLimit = 104857600;
         });
 
         var app = builder.Build();

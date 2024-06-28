@@ -8,10 +8,12 @@ using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 using MasterStream.Core.API.Models.Photos;
 using MasterStream.Core.API.Models.Photos.Exceptions;
+using Microsoft.AspNetCore.Cors;
 
 namespace MasterStream.Core.API.Controllers
 {
     [ApiController]
+    [EnableCors("AllowAll")]
     [Route("api/[controller]")]
     public class PhotoController : RESTFulController
     {
@@ -22,7 +24,7 @@ namespace MasterStream.Core.API.Controllers
             this.photoService = photoService;
         }
 
-        [HttpPost("upload")]
+        [HttpPost("uploadphoto")]
         public async Task<IActionResult> UploadPhoto(IFormFile file)
         {
             if (file == null || !ValidatePhoto(file))
@@ -51,7 +53,7 @@ namespace MasterStream.Core.API.Controllers
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
             var extension = Path.GetExtension(file.FileName).ToLower();
 
-            return file.Length > 0 && file.Length <= 50 * 1024 * 1024 && allowedExtensions.Contains(extension);
+            return file.Length > 0 && allowedExtensions.Contains(extension);
         }
     }
 }

@@ -6,6 +6,5 @@ namespace MasterStream.Core.API.Services.Videos
     {
         Task<string> AddVideoAsync(Stream fileStream, string fileName, string contentType);
         Task<Stream> GetVideoStreamByIdAsync(Guid videoMetadataId);
-        Task<List<Video>> RetrieveAllVideosAsync();
     }
 }

@@ -42,25 +42,6 @@ namespace MasterStream.Core.API.Brokers.Blobs
             return blobClient.Uri.ToString();
         }
 
-        //public async Task<Stream> GetStreamAsync(string fileName)
-        //{
-        //    var extension = Path.GetExtension(fileName).ToLower();
-        //    var blobContainerName = GetContainerName(extension);
-
-        //    if (blobContainerName == null)
-        //    {
-        //        throw new InvalidOperationException("Unsupported file type.");
-        //    }
-
-        //    var blobServiceClient = new BlobServiceClient(blobConnectionString);
-        //    var blobContainerClient = blobServiceClient.GetBlobContainerClient(blobContainerName);
-        //    var blobClient = blobContainerClient.GetBlobClient(fileName);
-
-        //    var response = await blobClient.DownloadAsync();
-
-        //    return response.Value.Content;
-        //}
-
         public async Task<Stream> GetBlobStreamAsync(string blobName, string containerName)
         {
             var blobServiceClient = new BlobServiceClient(blobConnectionString);
@@ -68,22 +49,12 @@ namespace MasterStream.Core.API.Brokers.Blobs
             var blobClient = blobContainerClient.GetBlobClient(blobName);
 
             BlobDownloadInfo blobDownloadInfo = await blobClient.DownloadAsync();
-            return blobDownloadInfo.Content;
-        }
 
-        public async Task<IEnumerable<string>> GetAllVideoFilesAsync()
-        {
-            var blobServiceClient = new BlobServiceClient(blobConnectionString);
-            var blobContainerClient = blobServiceClient.GetBlobContainerClient(videoContainerName);
+            var memoryStream = new MemoryStream();
+            await blobDownloadInfo.Content.CopyToAsync(memoryStream);
+            memoryStream.Position = 0;
 
-            List<string> videoFiles = new List<string>();
-
-            await foreach (BlobItem blobItem in blobContainerClient.GetBlobsAsync())
-            {
-                videoFiles.Add(blobItem.Name);
-            }
-
-            return videoFiles;
+            return memoryStream;
         }
 
         private string GetContainerName(string extension)
