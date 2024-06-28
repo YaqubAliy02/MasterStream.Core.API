@@ -39,7 +39,7 @@ internal class Program
                            .AllowAnyMethod();
                 });
         });
-
+        
         builder.WebHost.ConfigureKestrel(serverOptions =>
         {
             serverOptions.Limits.MaxRequestBodySize = 104857600;
