@@ -22,7 +22,7 @@ namespace MasterStream.Core.API.Controllers
             this.photoService = photoService;
         }
 
-        [HttpPost("upload")]
+        [HttpPost("uploadphoto")]
         public async Task<IActionResult> UploadPhoto(IFormFile file)
         {
             if (file == null || !ValidatePhoto(file))

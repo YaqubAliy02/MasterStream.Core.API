@@ -22,7 +22,7 @@ namespace MasterStream.Core.API.Controllers
             this.videoMetadataService = videoMetadataService;
         }
 
-        [HttpPost]
+        [HttpPost("uploadvideometadata")]
         public async ValueTask<ActionResult<VideoMetadata>> PostVideoMetadataAsync(VideoMetadata videoMetadata)
         {
             try
