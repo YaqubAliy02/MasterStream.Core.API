@@ -11,6 +11,7 @@ using MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages;
 using MasterStream.Core.API.Services.Photos;
 using MasterStream.Core.API.Services.VideoMetadatas;
 using MasterStream.Core.API.Services.Videos;
+using Microsoft.AspNetCore.Http.Features;
 internal class Program
 {
     private static void Main(string[] args)
@@ -28,7 +29,6 @@ internal class Program
         builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();
         builder.Services.AddTransient<IVideoService, VideoService>();
         builder.Services.AddTransient<IPhotoService, PhotoService>();
-        builder.Services.AddSingleton(x => new BlobServiceClient(builder.Configuration.GetConnectionString("BlobStorage")));
 
         builder.Services.AddCors(options =>
         {
@@ -36,9 +36,19 @@ internal class Program
                 builder =>
                 {
                     builder.AllowAnyOrigin()
-                           .AllowAnyHeader()
-                           .AllowAnyMethod();
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
                 });
+        });
+
+        builder.WebHost.ConfigureKestrel(serverOptions =>
+        {
+            serverOptions.Limits.MaxRequestBodySize = 104857600;
+        });
+
+        builder.Services.Configure<FormOptions>(options =>
+        {
+            options.MultipartBodyLengthLimit = 104857600;
         });
 
         var app = builder.Build();
@@ -51,12 +61,8 @@ internal class Program
 
         app.UseHttpsRedirection();
 
-        app.UseCors("AllowAll");
-
         app.UseAuthorization();
-
         app.MapControllers();
-
         app.Run();
     }
 }

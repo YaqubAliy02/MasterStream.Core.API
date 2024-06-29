@@ -22,7 +22,7 @@ namespace MasterStream.Core.API.Controllers
             this.photoService = photoService;
         }
 
-        [HttpPost("upload")]
+        [HttpPost("uploadphoto")]
         public async Task<IActionResult> UploadPhoto(IFormFile file)
         {
             if (file == null || !ValidatePhoto(file))
@@ -44,13 +44,6 @@ namespace MasterStream.Core.API.Controllers
             };
 
             return Ok(photo);
-        }
-
-        [HttpGet("photos")]
-        public async Task<IActionResult> GetAllPhotos()
-        {
-            var photos = await photoService.RetrieveAllPhotosAsync();
-            return Ok(photos);
         }
 
         private bool ValidatePhoto(IFormFile file)

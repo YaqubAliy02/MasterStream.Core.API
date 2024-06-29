@@ -4,7 +4,6 @@
 //--------------------------
 
 using MasterStream.Core.API.Brokers.Blobs;
-using MasterStream.Core.API.Models.Photos;
 
 namespace MasterStream.Core.API.Services.Photos
 {
@@ -19,8 +18,5 @@ namespace MasterStream.Core.API.Services.Photos
 
         public async Task<string> AddPhotoAsync(Stream fileStream, string fileName, string contentType) =>
             await this.blobBroker.UploadPhotoAsync(fileStream, fileName, contentType);
-
-        public Task<List<Photo>> RetrieveAllPhotosAsync() =>
-            this.blobBroker.SelectAllPhotosAsync();
     }
 }
