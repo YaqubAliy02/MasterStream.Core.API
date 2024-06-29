@@ -1,0 +1,37 @@
+﻿@page "/api/video/upload"
+@using MasterStream.Core.API.Models.VideoMetadatas
+@using MasterStream.Core.Web.Services
+@inject IVideoMetadataWebService videoMetadataWebService
+
+<h3>Upload Video and Photo</h3>
+
+<div class="file-handler-form container">
+    <EditForm Model="@videoMetadata" FormName="videoForm">
+        <DataAnnotationsValidator />
+        <ValidationSummary class="alert alert-danger" />
+
+        <div class="mb-3">
+            <label for="videoUpload" class="form-label">Upload Video:</label>
+            <InputFile id="videoUpload" OnChange="HandleVideoUpload" accept=".mp4,.avi" class="form-control-file" />
+            <small class="text-muted">mp4 and avi files are supported</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+    </EditForm>
+</div>
+
+@code {
+    private VideoMetadata videoMetadata = new VideoMetadata();
+    private string videoBlobUri;
+
+    private async Task HandleVideoUpload(InputFileChangeEventArgs e)
+    {
+        var file = e.File;
+        if (file != null)
+        {
+            using var stream = file.OpenReadStream(maxAllowedSize: 50 * 1024 * 1024);
+            videoBlobUri = await videoMetadataWebService.UploadVideoAsync(stream, file.Name, file.ContentType);
+            videoMetadata.BlobPath = videoBlobUri;
+        }
+    }
+}

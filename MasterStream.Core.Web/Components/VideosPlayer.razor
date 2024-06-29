@@ -1,0 +1,58 @@
+﻿@page "/videos"
+@using MasterStream.Core.API.Models.VideoMetadatas
+@inject HttpClient Http
+@inject NavigationManager Navigation
+
+<h3>All Videos</h3>
+
+@if (videoMetadataList == null)
+{
+    <p>Loading...</p>
+}
+else if (!videoMetadataList.Any())
+{
+    <p>No videos found.</p>
+}
+else
+{
+    <div class="video-thumbnails">
+        @foreach (var video in videoMetadataList)
+        {
+            <div class="video-thumbnail" @onclick="() => NavigateToVideo(video.Title)">
+                <img src="@video.Thubnail" alt="Video Thumbnail" />
+                <p>@video.Title</p>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private List<VideoMetadata> videoMetadataList;
+
+    protected override async Task OnInitializedAsync()
+    {
+        videoMetadataList = await Http.GetFromJsonAsync<List<VideoMetadata>>("https://localhost:7122/api/videometadata");
+    }
+
+    private void NavigateToVideo(string fileName)
+    {
+        Navigation.NavigateTo($"/videoplayer/{fileName}");
+    }
+}
+
+<style>
+    .video-thumbnails {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .video-thumbnail {
+        margin: 10px;
+        cursor: pointer;
+    }
+
+        .video-thumbnail img {
+            width: 200px;
+            height: auto;
+        }
+</style>

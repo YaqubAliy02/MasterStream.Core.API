@@ -46,6 +46,13 @@ namespace MasterStream.Core.API.Controllers
             return Ok(photo);
         }
 
+        [HttpGet("photos")]
+        public async Task<IActionResult> GetAllPhotos()
+        {
+            var photos = await photoService.RetrieveAllPhotosAsync();
+            return Ok(photos);
+        }
+
         private bool ValidatePhoto(IFormFile file)
         {
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
@@ -53,5 +60,6 @@ namespace MasterStream.Core.API.Controllers
 
             return file.Length > 0 && file.Length <= 50 * 1024 * 1024 && allowedExtensions.Contains(extension);
         }
+
     }
 }

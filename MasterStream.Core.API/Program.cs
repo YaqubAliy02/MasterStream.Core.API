@@ -3,6 +3,7 @@
 // ALL RIGHTS RESERVED      
 //--------------------------
 
+using Azure.Storage.Blobs;
 using MasterStream.Core.API.Brokers.Blobs;
 using MasterStream.Core.API.Brokers.DateTimes;
 using MasterStream.Core.API.Brokers.Loggings;
@@ -35,22 +36,6 @@ internal class Program
                 builder =>
                 {
                     builder.AllowAnyOrigin()
-                           .AllowAnyMethod()
-                           .AllowAnyHeader();
-                });
-        });
-
-
-        builder.WebHost.ConfigureKestrel(serverOptions =>
-        {
-            serverOptions.Limits.MaxRequestBodySize = 104857600;
-        });
-
-        builder.Services.Configure<FormOptions>(options =>
-        {
-            options.MultipartBodyLengthLimit = 104857600;
-        });
-
 
         var app = builder.Build();
 
@@ -61,8 +46,7 @@ internal class Program
         }
 
         app.UseHttpsRedirection();
-        app.UseRouting();
-        app.UseCors("AllowAll");
+
         app.UseAuthorization();
         app.MapControllers();
         app.Run();
