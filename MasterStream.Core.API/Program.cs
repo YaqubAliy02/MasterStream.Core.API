@@ -64,6 +64,12 @@ internal class Program
         app.UseStaticFiles();
         app.UseAuthorization();
         app.MapControllers();
+
+        app.UseDefaultFiles(new DefaultFilesOptions
+        {
+            DefaultFileNames = new List<string> { "main.html" }
+        });
+
         app.Run();
     }
 }

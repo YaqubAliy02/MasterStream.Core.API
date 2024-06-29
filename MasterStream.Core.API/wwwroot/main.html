@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Video Gallery</h1>
+            <button class="btn btn-primary" onclick="location.href='upload.html'">Upload Video</button>
+        </div>
+        <div class="mb-4">
+            <input type="text" id="search-input" class="form-control" placeholder="Search videos by title...">
+        </div>
+        <div class="row" id="video-list">
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('https://localhost:7122/api/videometadata')
+                .then(response => response.json())
+                .then(videos => {
+                    const videoList = document.getElementById('video-list');
+                    const searchInput = document.getElementById('search-input');
+
+                    function displayVideos(filteredVideos) {
+                        videoList.innerHTML = '';
+                        filteredVideos.forEach(video => {
+                            const videoCard = document.createElement('div');
+                            videoCard.className = 'col-md-4 mb-4';
+                            videoCard.innerHTML = `
+                                <div class="card video-thumbnail" onclick="location.href='video.html?id=${video.id}'">
+                                    <img src="${video.thubnail}" class="card-img-top" alt="${video.title}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${video.title}</h5>
+                                    </div>
+                                </div>
+                            `;
+                            videoList.appendChild(videoCard);
+                        });
+                    }
+
+                    displayVideos(videos);
+
+                    searchInput.addEventListener('input', function() {
+                        const searchTerm = searchInput.value.toLowerCase();
+                        const filteredVideos = videos.filter(video => video.title.toLowerCase().includes(searchTerm));
+                        displayVideos(filteredVideos);
+                    });
+                })
+                .catch(error => console.error('Error fetching videos:', error));
+        });
+    </script>
+</body>
+</html>

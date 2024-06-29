@@ -1,0 +1,81 @@
+﻿body {
+    background-color: #f9f9f9;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+.video-thumbnail {
+    cursor: pointer;
+    transition: transform 0.3s;
+}
+
+    .video-thumbnail:hover {
+        transform: scale(1.05);
+    }
+
+.card-img-top {
+    object-fit: cover;
+    height: 180px;
+}
+
+.card-body {
+    text-align: center;
+    padding: 10px;
+}
+
+.card-title {
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+#search-input {
+    margin-bottom: 20px;
+}
+
+#video-title {
+    font-size: 2em; /* Larger title size */
+    margin-top: 0;
+}
+
+#video-description {
+    font-size: 1.2em; /* Description font size */
+    margin-top: 10px;
+}
+
+.card.shadow {
+    border-radius: 10px;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.form-control-file {
+    overflow: hidden;
+}
+
+.form-group label {
+    font-weight: bold;
+}
+
+.custom-file-input {
+    display: none;
+}
+
+.custom-file-label {
+    border: 2px solid #ced4da;
+    border-radius: 4px;
+    padding: 8px 12px;
+    cursor: pointer;
+}
+
+    .custom-file-label::after {
+        content: 'Browse';
+    }
+
+.custom-file-input:focus ~ .custom-file-label {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
