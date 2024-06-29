@@ -17,7 +17,7 @@ namespace MasterStream.Core.API.Brokers.Blobs
         public async Task<List<Photo>> SelectAllPhotosAsync()
         {
             var blobServiceClient = new BlobServiceClient(blobConnectionString);
-            var blobContainerClient = blobServiceClient.GetBlobContainerClient(photoContainerName); // Ensure this is your photo container name
+            var blobContainerClient = blobServiceClient.GetBlobContainerClient(photoContainerName);
             var blobItems = blobContainerClient.GetBlobsAsync();
             var allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".gif" };
 

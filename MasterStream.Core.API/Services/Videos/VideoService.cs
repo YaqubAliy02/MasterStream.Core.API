@@ -7,8 +7,6 @@ using MasterStream.Core.API.Brokers.Blobs;
 using MasterStream.Core.API.Brokers.DateTimes;
 using MasterStream.Core.API.Brokers.Loggings;
 using MasterStream.Core.API.Models.VideoMetadatas.Brokers.Storages;
-using MasterStream.Core.API.Models.Videos;
-using Microsoft.EntityFrameworkCore;
 
 namespace MasterStream.Core.API.Services.Videos
 {
@@ -37,6 +35,9 @@ namespace MasterStream.Core.API.Services.Videos
             {
                 return null;
             }
-
+            var bloburi = videoMetadata.BlobPath;
+            string blobName = bloburi.Split('/').Last();
+            return await blobBroker.GetBlobStreamAsync(blobName, "videos");
+        }
     }
 }

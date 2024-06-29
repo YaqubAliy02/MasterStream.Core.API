@@ -18,8 +18,5 @@ namespace MasterStream.Core.API.Services.Photos
 
         public async Task<string> AddPhotoAsync(Stream fileStream, string fileName, string contentType) =>
             await this.blobBroker.UploadPhotoAsync(fileStream, fileName, contentType);
-
-        public Task<List<Photo>> RetrieveAllPhotosAsync() =>
-            this.blobBroker.SelectAllPhotosAsync();
     }
 }
