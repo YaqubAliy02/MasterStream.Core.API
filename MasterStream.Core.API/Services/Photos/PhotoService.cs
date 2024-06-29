@@ -1,10 +1,9 @@
-﻿//--------------------------
+//--------------------------
 // TARTEEB LLC               
 // ALL RIGHTS RESERVED      
 //--------------------------
 
 using MasterStream.Core.API.Brokers.Blobs;
-using MasterStream.Core.API.Models.Photos;
 
 namespace MasterStream.Core.API.Services.Photos
 {

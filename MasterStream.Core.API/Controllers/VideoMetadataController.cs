@@ -6,12 +6,14 @@
 using MasterStream.Core.API.Models.Exceptions;
 using MasterStream.Core.API.Models.VideoMetadatas;
 using MasterStream.Core.API.Services.VideoMetadatas;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
 
 namespace MasterStream.Core.API.Controllers
 {
     [ApiController]
+    [EnableCors("AllowAll")]
     [Route("api/[controller]")]
     public partial class VideoMetadataController : RESTFulController
     {
@@ -22,7 +24,7 @@ namespace MasterStream.Core.API.Controllers
             this.videoMetadataService = videoMetadataService;
         }
 
-        [HttpPost]
+        [HttpPost("uploadvideometadata")]
         public async ValueTask<ActionResult<VideoMetadata>> PostVideoMetadataAsync(VideoMetadata videoMetadata)
         {
             try

@@ -42,11 +42,9 @@ namespace MasterStream.Core.API.Services.Videos
                 return null;
             }
 
-            var blobName = videoMetadata.BlobPath.Split('/').Last();
+            var bloburi = videoMetadata.BlobPath;
+            string blobName = bloburi.Split('/').Last();
             return await blobBroker.GetBlobStreamAsync(blobName, "videos");
         }
-
-        public Task<List<Video>> RetrieveAllVideosAsync() =>
-            this.blobBroker.SelectAllVideosAsync();
     }
 }

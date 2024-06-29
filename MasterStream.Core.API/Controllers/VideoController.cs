@@ -22,7 +22,7 @@ public class VideoController : RESTFulController
         this.videoService = videoService;
     }
 
-    [HttpPost("upload")]
+    [HttpPost("uploadvideo")]
     public async Task<IActionResult> UploadVideo(IFormFile file)
     {
         if (file == null || !ValidateVideo(file))
@@ -60,18 +60,11 @@ public class VideoController : RESTFulController
         return File(stream, contentType, enableRangeProcessing: true);
     }
 
-    [HttpGet("videos")]
-    public async Task<IActionResult> GetAllVideos()
-    {
-        var videos = await videoService.RetrieveAllVideosAsync();
-        return Ok(videos);
-    }
-
     private bool ValidateVideo(IFormFile file)
     {
         var allowedExtensions = new[] { ".mp4", ".avi", ".mov" };
         var extension = Path.GetExtension(file.FileName).ToLower();
 
-        return file.Length > 0 && file.Length <= 50 * 1024 * 1024 && allowedExtensions.Contains(extension);
+        return file.Length > 0 && allowedExtensions.Contains(extension);
     }
 }
