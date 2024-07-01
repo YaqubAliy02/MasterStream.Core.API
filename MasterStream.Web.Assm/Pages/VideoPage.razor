@@ -1,0 +1,95 @@
+﻿@page "/video/{id:guid}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css">
+    <style>
+        .video-container {
+            position: relative;
+        }
+
+        .button-container {
+            position: absolute;
+            bottom: -50px;
+            left: 0;
+            width: 100%;
+            text-align: left;
+        }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="video-container">
+                    <div class="embed-responsive embed-responsive-16by9">
+                        <video id="video-player" class="embed-responsive-item" controls @ref="videoPlayer"></video>
+                    </div>
+                    <div class="button-container">
+                        <button class="btn btn-primary" @onclick="ReturnToMain">Return to Main Page</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <h1>@videoTitle</h1>
+                <p class="mt-3">@videoDescription</p>
+            </div>
+        </div>
+    </div>
+<script>
+    function setVideoSource(element, src) {
+        element.src = src;
+    }
+</script>
+</body>
+</html>
+
+@code {
+    [Parameter] public Guid Id { get; set; }
+    private string videoTitle = string.Empty;
+    private string videoDescription = string.Empty;
+    private ElementReference videoPlayer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var video = await Http.GetFromJsonAsync<VideoMetadata>($"https://localhost:7122/api/videometadata/{Id}");
+            if (video != null)
+            {
+                videoTitle = video.Title;
+                videoDescription = video.Description;
+                await JSRuntime.InvokeVoidAsync("setVideoSource", videoPlayer, $"https://localhost:7122/api/Video/stream/{Id}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error fetching video: {ex.Message}");
+        }
+    }
+
+    private void ReturnToMain()
+    {
+        NavigationManager.NavigateTo("/mainpage");
+    }
+
+    public class VideoMetadata
+    {
+        public Guid Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string BlobPath { get; set; }
+        public string Thumbnail { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
+        public DateTimeOffset UpdatedDate { get; set; }
+    }
+}

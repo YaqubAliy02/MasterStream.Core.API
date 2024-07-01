@@ -1,0 +1,98 @@
+﻿@page "/mainpage"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/index.css">
+    <style>
+        .card-img-top {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .video-thumbnail {
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+            .video-thumbnail:hover {
+                transform: scale(1.05);
+            }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Video Gallery</h1>
+            <button class="btn btn-primary" @onclick="NavigateToUpload">Upload Video</button>
+        </div>
+        <div class="mb-4">
+            <input type="text" id="search-input" class="form-control" placeholder="Search videos by title..." @oninput="SearchVideos">
+        </div>
+        <div class="row" id="video-list">
+            @foreach (var video in filteredVideos)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="video-thumbnail" @onclick="() => NavigateToVideo(video.Id)">
+                        <img src="@video.Thubnail" class="card-img-top" alt="@video.Title">
+                        <div class="card-body">
+                            <h5 class="card-title">@video.Title</h5>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</body>
+</html>
+@code {
+    private List<Video> videos = new();
+    private List<Video> filteredVideos = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            videos = await Http.GetFromJsonAsync<List<Video>>("https://localhost:7122/api/videometadata");
+            filteredVideos = videos;
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error fetching videos: {ex.Message}");
+        }
+    }
+
+    private void SearchVideos(ChangeEventArgs e)
+    {
+        var searchTerm = e.Value.ToString().ToLower();
+        filteredVideos = videos.Where(video => video.Title.ToLower().Contains(searchTerm)).ToList();
+    }
+
+    private void NavigateToVideo(Guid videoId)
+    {
+        NavigationManager.NavigateTo($"/video/{videoId}");
+    }
+
+    private void NavigateToUpload()
+    {
+        NavigationManager.NavigateTo("/upload");
+    }
+
+    public class Video
+    {
+        public Guid Id { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
+        public string BlobPath { get; set; }
+        public string Thubnail { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
+        public DateTimeOffset UpdatedDate { get; set; }
+    }
+}
