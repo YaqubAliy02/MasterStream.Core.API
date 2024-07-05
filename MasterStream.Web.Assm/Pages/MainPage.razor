@@ -1,4 +1,4 @@
-﻿@page "/mainpage"
+﻿@page "/"
 @inject HttpClient Http
 @inject NavigationManager NavigationManager
 
@@ -25,6 +25,16 @@
             .video-thumbnail:hover {
                 transform: scale(1.05);
             }
+
+        .card-body {
+            text-align: center;
+            padding: 10px;
+        }
+
+        .card-title {
+            font-size: 1em;
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
