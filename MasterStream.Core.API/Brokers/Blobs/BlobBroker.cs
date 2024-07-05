@@ -4,8 +4,6 @@
 //--------------------------
 
 using Azure.Storage.Blobs;
-using Azure.Storage.Blobs.Models;
-using MasterStream.Core.API.Models.Videos;
 
 namespace MasterStream.Core.API.Brokers.Blobs
 {
