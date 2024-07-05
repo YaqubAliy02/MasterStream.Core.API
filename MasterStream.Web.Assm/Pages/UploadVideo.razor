@@ -1,0 +1,196 @@
+﻿@page "/upload"
+@inject NavigationManager NavigationManager
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Video</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .form-group label {
+            font-weight: bold;
+        }
+
+        .custom-file-input {
+            display: none;
+        }
+
+        .custom-file-label {
+            border: 2px solid #ced4da;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+            .custom-file-label::after {
+                content: 'Browse';
+            }
+
+        .custom-file-input:focus ~ .custom-file-label {
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h1 class="text-center mb-4">Upload Video</h1>
+                        <form id="upload-form">
+                            <div class="form-group">
+                                <label for="title">Title</label>
+                                <input type="text" class="form-control" id="title" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="description">Description</label>
+                                <textarea class="form-control" id="description" rows="3" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="video">Video File</label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="video" accept="video/*" required onchange="updateFileLabel('video', 'Choose video...')">
+                                    <label class="custom-file-label" for="video">Choose video...</label>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="thumbnail">Thumbnail Image</label>
+                                <div class="custom-file">
+                                    <input type="file" class="custom-file-input" id="thumbnail" accept="image/*" required onchange="updateFileLabel('thumbnail', 'Choose photo...')">
+                                    <label class="custom-file-label" for="thumbnail">Choose photo...</label>
+                                </div>
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-primary mr-2">Upload</button>
+                                <button type="button" class="btn btn-secondary mr-2" onclick="cancelUpload()">Cancel</button>
+                                <button class="btn btn-primary" @onclick="ReturnToMain">Return to Main Page</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('upload-form').addEventListener('submit', async function (event) {
+            event.preventDefault();
+
+            const title = document.getElementById('title').value;
+            const description = document.getElementById('description').value;
+            const videoFile = document.getElementById('video').files[0];
+            const thumbnailFile = document.getElementById('thumbnail').files[0];
+
+            function generateGUID() {
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+                    var r = Math.random() * 16 | 0,
+                        v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+
+            try {
+                const videoUrl = await uploadVideoFile(videoFile, 'video');
+                const thumbnailUrl = await uploadPhotoFile(thumbnailFile, 'photo');
+
+                const videoMetadata = {
+                    id: generateGUID(),
+                    title: title,
+                    description: description,
+                    blobpath: videoUrl,
+                    thubnail: thumbnailUrl,
+                    createdDate: new Date().toISOString(),
+                    updatedDate: new Date().toISOString()
+                };
+
+                await uploadVideoMetadata(videoMetadata);
+                alert('Upload successful!');
+                window.location.href = '/';
+            } catch (error) {
+                console.error('Error uploading files:', error);
+                alert('Error uploading files. Please try again.');
+            }
+        });
+
+        async function uploadVideoFile(file, type) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await fetch(`https://localhost:7122/api/Video/uploadvideo`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('File upload failed');
+            }
+
+            const data = await response.json();
+            return data.blobUri.toString();
+        }
+
+        async function uploadPhotoFile(file, type) {
+            const formData = new FormData();
+            formData.append('file', file);
+
+            const response = await fetch(`https://localhost:7122/api/Photo/uploadphoto`, {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error('File upload failed');
+            }
+
+            const data = await response.json();
+            return data.blobUri.toString();
+        }
+
+        async function uploadVideoMetadata(videoMetadata) {
+            const response = await fetch('https://localhost:7122/api/VideoMetadata/uploadvideometadata', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(videoMetadata)
+            });
+
+            if (!response.ok) {
+                throw new Error('Video metadata upload failed');
+            }
+        }
+
+        function cancelUpload() {
+            // Reset form fields
+            document.getElementById('title').value = '';
+            document.getElementById('description').value = '';
+            document.getElementById('video').value = '';
+            document.getElementById('thumbnail').value = '';
+
+            // Reset custom file input labels
+            document.querySelectorAll('.custom-file-label').forEach(label => {
+                if (label.getAttribute('for') === 'video') {
+                    label.innerHTML = 'Choose video...';
+                } else if (label.getAttribute('for') === 'thumbnail') {
+                    label.innerHTML = 'Choose photo...';
+                }
+            });
+        }
+
+        function updateFileLabel(inputId, initialLabel) {
+            const fileInput = document.getElementById(inputId);
+            const label = fileInput.nextElementSibling;
+            const fileName = fileInput.files[0].name;
+            label.innerHTML = fileName || initialLabel;
+        }
+    </script>
+</body>
+</html>
+@code {
+    private void ReturnToMain()
+    {
+        NavigationManager.NavigateTo("/");
+    }
+}
