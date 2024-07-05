@@ -83,7 +83,7 @@ namespace WatchWave.Api.Infrastructure.Build
 
             if (!Directory.Exists(directoryPath))
                 Directory.CreateDirectory(directoryPath);
-            
+
             ADotNetClient aDotNetClient = new ADotNetClient();
             aDotNetClient.SerializeAndWriteToFile(githubPipeline, path: buildScriptPath);
         }
