@@ -39,7 +39,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
             actualVideoMetadata.Should().BeEquivalentTo(expectedVideoMetadata);
 
             this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTimeOffset(), 
+                broker.GetCurrentDateTimeOffset(),
                     Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
