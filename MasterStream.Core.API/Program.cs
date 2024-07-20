@@ -24,6 +24,7 @@ internal class Program
         builder.Services.AddDbContext<StorageBroker>();
         builder.Services.AddTransient<IStorageBroker, StorageBroker>();
         builder.Services.AddTransient<IBlobBroker, BlobBroker>();
+        builder.Services.AddTransient<ILogger<LoggingBroker>, Logger<LoggingBroker>>();
         builder.Services.AddTransient<ILoggingBroker, LoggingBroker>();
         builder.Services.AddTransient<IDateTimeBroker, DateTimeBroker>();
         builder.Services.AddTransient<IVideoMetadataService, VideoMetadataService>();

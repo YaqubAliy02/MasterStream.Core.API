@@ -4,8 +4,8 @@
 //--------------------------
 
 using FluentAssertions;
-using MasterStream.Core.API.Models.Exceptions;
 using MasterStream.Core.API.Models.VideoMetadatas;
+using MasterStream.Core.API.Models.VideoMetadatas.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -78,7 +78,8 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
                         alreadyExistVideoMetadataException);
 
             this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTimeOffset()).Throws(duplicateKeyException);
+                broker.GetCurrentDateTimeOffset())
+                    .Throws(duplicateKeyException);
 
             //when
             ValueTask<VideoMetadata> addVideoMetadataTask =
@@ -162,7 +163,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
                     dbUpdateException);
 
             var expectedVideoMetadataDependencyException = new VideoMetadataDependencyException(
-                "Video Metadata dependency exception error occured, please contact support.",
+                "Video metadata dependency exception error occured, please contact support.",
                     failedVideoMetadataStorageException);
 
             this.dateTimeBrokerMock.Setup(broker =>

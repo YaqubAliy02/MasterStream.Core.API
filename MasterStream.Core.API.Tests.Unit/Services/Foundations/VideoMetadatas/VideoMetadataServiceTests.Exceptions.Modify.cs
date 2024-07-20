@@ -4,8 +4,8 @@
 //--------------------------
 
 using FluentAssertions;
-using MasterStream.Core.API.Models.Exceptions;
 using MasterStream.Core.API.Models.VideoMetadatas;
+using MasterStream.Core.API.Models.VideoMetadatas.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Moq;
@@ -75,7 +75,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
 
             var expectedVideoMetadataDependencyException =
                 new VideoMetadataDependencyException(
-                    message: "Video Metadata dependency exception error occured, please contact support.",
+                    message: "Video metadata dependency exception error occured, please contact support.",
                     innerException: failedVideoMetadataStorageException);
 
             this.storageBrokerMock.Setup(broker =>

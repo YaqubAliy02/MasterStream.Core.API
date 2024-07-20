@@ -4,8 +4,8 @@
 //--------------------------
 
 using FluentAssertions;
-using MasterStream.Core.API.Models.Exceptions;
 using MasterStream.Core.API.Models.VideoMetadatas;
+using MasterStream.Core.API.Models.VideoMetadatas.Exceptions;
 using Moq;
 
 namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
@@ -54,6 +54,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
         [InlineData(null)]
         [InlineData("")]
         [InlineData(" ")]
+
         public async Task ShouldThrowValidationExceptionOnAddIfInputIsInvalidAndLogItAsync(
             string invalidText)
         {

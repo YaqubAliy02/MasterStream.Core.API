@@ -1,6 +1,6 @@
 ﻿using Xeptions;
 
-namespace MasterStream.Core.API.Models.Exceptions
+namespace MasterStream.Core.API.Models.VideoMetadatas.Exceptions
 {
     public class VideoMetadataServiceException : Xeption
     {

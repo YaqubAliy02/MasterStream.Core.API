@@ -5,11 +5,11 @@
 
 using Xeptions;
 
-namespace MasterStream.Core.API.Models.Exceptions
+namespace MasterStream.Core.API.Models.VideoMetadatas.Exceptions
 {
-    public class NullVideoMetadataException : Xeption
+    public class InvalidVideoMetadataException : Xeption
     {
-        public NullVideoMetadataException(string message)
+        public InvalidVideoMetadataException(string message)
             : base(message)
         { }
     }

@@ -3,8 +3,8 @@
 // ALL RIGHTS RESERVED      
 //--------------------------
 
-using MasterStream.Core.API.Models.Exceptions;
 using MasterStream.Core.API.Models.VideoMetadatas;
+using MasterStream.Core.API.Models.VideoMetadatas.Exceptions;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using STX.EFxceptions.Abstractions.Models.Exceptions;
@@ -110,7 +110,7 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
         private VideoMetadataDependencyException CreateAndLogDependencyException(Xeption exception)
         {
             var videoMetadataDependencyException = new VideoMetadataDependencyException(
-                "Video Metadata dependency exception error occured, please contact support.",
+                "Video metadata dependency exception error occured, please contact support.",
                     exception);
 
             this.loggingBroker.LogError(videoMetadataDependencyException);

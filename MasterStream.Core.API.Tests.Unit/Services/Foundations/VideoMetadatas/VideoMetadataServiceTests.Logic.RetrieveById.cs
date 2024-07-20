@@ -30,7 +30,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
             VideoMetadata actualVideoMetadata =
                 await this.videoMetadataService.RetrieveVideoMetadataByIdAsync(inputVideoMetadataId);
 
-            //then
+            //then  
             actualVideoMetadata.Should().BeEquivalentTo(expectedVideoMetadata);
 
             this.storageBrokerMock.Verify(broker =>

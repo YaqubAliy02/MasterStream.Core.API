@@ -1,10 +1,10 @@
 ﻿//--------------------------
 // TARTEEB LLC               
 // ALL RIGHTS RESERVED      
-//--------------------------
+//--------------------------d
 
-using MasterStream.Core.API.Models.Exceptions;
 using MasterStream.Core.API.Models.VideoMetadatas;
+using MasterStream.Core.API.Models.VideoMetadatas.Exceptions;
 
 namespace MasterStream.Core.API.Services.VideoMetadatas
 {
@@ -96,7 +96,7 @@ namespace MasterStream.Core.API.Services.VideoMetadatas
         private dynamic IsNotRecent(DateTimeOffset date) => new
         {
             Condition = IsDateNotRecent(date),
-            Message = "Date is not recent"
+            Message = "Date is required"
         };
 
         private bool IsDateNotRecent(DateTimeOffset date)

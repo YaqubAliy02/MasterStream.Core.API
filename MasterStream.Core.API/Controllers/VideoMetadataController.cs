@@ -3,8 +3,8 @@
 // ALL RIGHTS RESERVED      
 //--------------------------
 
-using MasterStream.Core.API.Models.Exceptions;
 using MasterStream.Core.API.Models.VideoMetadatas;
+using MasterStream.Core.API.Models.VideoMetadatas.Exceptions;
 using MasterStream.Core.API.Services.VideoMetadatas;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;

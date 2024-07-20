@@ -4,7 +4,7 @@
 //--------------------------
 
 using FluentAssertions;
-using MasterStream.Core.API.Models.Exceptions;
+using MasterStream.Core.API.Models.VideoMetadatas.Exceptions;
 using Microsoft.Data.SqlClient;
 using Moq;
 

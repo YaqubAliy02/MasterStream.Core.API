@@ -17,14 +17,15 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
         public async Task ShouldAddVideoMetadataAsync()
         {
             //given
-            DateTimeOffset randomDate = GetRandomDateTimeOffset();
-            VideoMetadata randomVideoMetadata = CreateRandomVideoMetadata(randomDate);
+            DateTimeOffset randomDateTimeOffset = GetRandomDateTimeOffset();
+            VideoMetadata randomVideoMetadata = CreateRandomVideoMetadata(randomDateTimeOffset);
             VideoMetadata inputVideoMetadata = randomVideoMetadata;
             VideoMetadata storageVideoMetadata = inputVideoMetadata;
             VideoMetadata expectedVideoMetadata = storageVideoMetadata.DeepClone();
 
             this.dateTimeBrokerMock.Setup(broker =>
-                broker.GetCurrentDateTimeOffset()).Returns(randomDate);
+                broker.GetCurrentDateTimeOffset())
+                    .Returns(randomDateTimeOffset);
 
             this.storageBrokerMock.Setup(broker =>
                 broker.InsertVideoMetadataAsync(inputVideoMetadata))
@@ -38,7 +39,8 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
             actualVideoMetadata.Should().BeEquivalentTo(expectedVideoMetadata);
 
             this.dateTimeBrokerMock.Verify(broker =>
-                broker.GetCurrentDateTimeOffset(), Times.Once);
+                broker.GetCurrentDateTimeOffset(), 
+                    Times.Once);
 
             this.storageBrokerMock.Verify(broker =>
                 broker.InsertVideoMetadataAsync(inputVideoMetadata),
