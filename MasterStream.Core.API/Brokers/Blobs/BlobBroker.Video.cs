@@ -3,8 +3,8 @@
 // ALL RIGHTS RESERVED      
 //--------------------------
 
-using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 
 namespace MasterStream.Core.API.Brokers.Blobs
 {

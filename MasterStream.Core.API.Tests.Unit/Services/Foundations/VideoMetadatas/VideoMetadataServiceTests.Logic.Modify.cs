@@ -32,7 +32,7 @@ namespace MasterStream.Core.API.Tests.Unit.Services.Foundations.VideoMetadatas
                     .ReturnsAsync(updatedVideoMetadata);
 
             //when
-            VideoMetadata actualVideoMetadata = 
+            VideoMetadata actualVideoMetadata =
                 await this.videoMetadataService.ModifyVideoMetadataAsync(inputVideoMetadata);
 
             //then

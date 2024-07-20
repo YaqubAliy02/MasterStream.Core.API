@@ -1,6 +1,4 @@
-﻿using MasterStream.Core.API.Models.Videos;
-
-namespace MasterStream.Core.API.Services.Videos
+﻿namespace MasterStream.Core.API.Services.Videos
 {
     public interface IVideoService
     {

@@ -3,11 +3,11 @@
 // ALL RIGHTS RESERVED      
 //--------------------------
 
+using MasterStream.Core.API.Models.Photos;
+using MasterStream.Core.API.Models.Photos.Exceptions;
 using MasterStream.Core.API.Services.Photos;
 using Microsoft.AspNetCore.Mvc;
 using RESTFulSense.Controllers;
-using MasterStream.Core.API.Models.Photos;
-using MasterStream.Core.API.Models.Photos.Exceptions;
 
 namespace MasterStream.Core.API.Controllers
 {
